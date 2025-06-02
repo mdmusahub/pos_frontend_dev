@@ -22,19 +22,30 @@ let Navbar = ({ searchQuery, setSearchQuery }) => {
             />
           </div>
 
-          <Link to="/category" className="text-2xl text-yellow-600 hover:underline font-medium">
+          <Link to="/category" className=" text-yellow-600 text-2xl font-extrabold hover:underline">
             Categories
           </Link>
         </div>
-
+        <Link to="/variant">
+          <div>
+            Variant
+          </div>
+          </Link>
         <div className="flex gap-4 items-center">
           <button className="bg-blue-400 py-1 px-4 rounded text-white hover:bg-blue-500">
             Login
           </button>
-          <button className="bg-blue-400 py-1 px-3 rounded text-white hover:bg-blue-500">
-            Sign up
+          <button className="bg-blue-400 py-1 px-4 rounded text-white hover:bg-blue-500">
+
+            Siginup
           </button>
         </div>
+        <Link to="/addcart">
+        <div>
+                  <button className="bg-cyan-700 py-1 px-4 rounded text-white hover:bg-cyan-950">
+
+          add items</button></div>
+          </Link>
       </nav>
     </>
   );
