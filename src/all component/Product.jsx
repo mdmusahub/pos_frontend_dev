@@ -19,7 +19,8 @@ const Main = () => {
   const [variantdata, setvariantdata] = useState([]);
   const [variantModalOpen, setVariantModalOpen] = useState(false);
   const [selectedProductForVariant, setSelectedProductForVariant] = useState(null);
-
+ const [quantities, setQuantities] = useState({})
+ const[sort,setsort]=useState("");
   const getData = () => {
     axios.get("http://localhost:3000/product").then((res) => setData(res.data));
   };
@@ -55,6 +56,8 @@ const Main = () => {
     setCreatedAt("");
   };
 
+
+
   const sub = (e) => {
     e.preventDefault();
     const obj = {
@@ -79,6 +82,20 @@ const Main = () => {
       });
     }
   };
+
+  const increase = (id) => {
+    setQuantities(prev => ({
+      ...prev,
+      [id]: prev[id] + 1
+    }))
+  }
+
+  const decrease = (id) => {
+    setQuantities(prev => ({
+      ...prev,
+      [id]: prev[id] > 1 ? prev[id] - 1 : dlt(id)
+    }))
+  }
 
   const edit = (v) => {
     setName(v.name);
@@ -108,6 +125,14 @@ const Main = () => {
   const filterdata = array.filter((product) =>
     product.name.toLowerCase().includes(searchvalue.toLowerCase())
   );
+    let sortproduct=filterdata.sort((min,max)=>{
+  if(sort==="min-max"){
+    console.log(min.price - max.price)
+    return min.price - max.price
+  }else if (sort==="max-min"){
+    return max.price - min.price
+  }
+})
 
   const[cartproduct,setcardpro]=useState({})
 
@@ -122,14 +147,14 @@ const Main = () => {
 
   return (
     <>
-      <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} />
+      <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} sortdata={setsort} />
       <Newcarousel />
 
       {/* Form */}
       <div className="fixed top-[10%] flex justify-center items-center z-10">
         <form
           onSubmit={sub}
-          className="bg-gradient-to-r from-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[95vw]"
+          className="bg-gradient-to-r from-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[100vw]"
         >
           <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
           <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="text" placeholder="SKU" value={sku} onChange={(e) => setSku(e.target.value)} />
@@ -159,7 +184,9 @@ const Main = () => {
                     <p><strong>{variant.variant_name}</strong> <button></button> : {variant.variant_value}</p> 
                    <div className='flex justify-between'>
                     <p>Price: ₹{variant.price}</p> 
-                   <button className='bg-green-700 pl-7 pr-7 py-2 text-white' onClick={()=>add(variant)} >Add</button>
+                   <button className='bg-green-700 pl-7 pr-7 py-2 text-white' onClick={()=>add(variant)}>Add
+
+                   </button>
                     </div>
                   </div>
                 ))}
@@ -171,9 +198,8 @@ const Main = () => {
         </div>
       )}
 
-      {/* Product Cards */}
       <div className="flex absolute top-[60%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
-        {filterdata.map((v) => (
+        {sortproduct.map((v) => (
           <div key={v.id} className="w-[300px] bg-white text-black p-4 rounded-lg shadow-md font-serif relative">
             <p><strong>ID:</strong> {v.id}</p>
             <p><strong>Name:</strong> {v.name}</p>
