@@ -30,6 +30,11 @@
       "description": "tfygjuhkjl",
       "parent_id": null
     },
+
+
+    
+
+
     {
       "id": "10",
       "name": "jewallery",
@@ -37,52 +42,70 @@
       "parent_id": null
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "keyboard",
       "description": "frontech",
       "parent_id": null
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "electronics",
       "description": "fghbnjkml,;.",
       "parent_id": null
     },
     {
-      "id": 12,
+      "id": "12",
       "name": "accessories",
       "description": "sdfghjk",
       "parent_id": null
     },
     {
-      "id": 28,
+      "id": "28",
       "name": "plastic",
       "description": "thjkl;",
       "parent_id": 45
     },
     {
-      "id": 13,
+      "id": "13",
       "name": "furniture",
       "description": "gvhbjnkm,./",
       "parent_id": null
     },
     {
-      "id": 14,
+      "id": "14",
       "name": "clothes",
       "description": "rtyhjkl;",
+      "parent_id": null
+    },
+    {
+      "id": "20",
+      "name": "furniture",
+      "description": "cgvhbjkn,",
+      "parent_id": null
+    },
+    {
+      "id": "21",
+      "name": "electronics",
+      "description": "t7uhijkl",
+      "parent_id": null
+    },
+    {
+      "id": "22",
+      "name": "furniture",
+      "description": "gvhbjknl",
       "parent_id": null
     }
   ],
   "product": [
     {
-      "id": "2",
       "name": "Men's T-Shirt",
       "sku": "TSH-MEN01",
-      "category_id": 2,
+      "category_id": "2",
       "price": 25,
       "description": "Cotton t-shirt for men",
       "created_at": "2025-01-10T12:00:00Z",
-      "updated_at": "2025-01-12T09:15:00Z"
+      "updated_at": "2025-05-29T08:38:10.760Z",
+      "id": "2"
     },
     {
       "id": "581c",
@@ -125,16 +148,6 @@
       "updated_at": "2025-05-26T18:43:10.508Z"
     },
     {
-      "name": "mouse",
-      "sku": "KHu",
-      "category_id": "12",
-      "price": "456",
-      "description": "cfgvbhnm",
-      "created_at": "2025-05-27T05:53:34.758Z",
-      "updated_at": "2025-05-27T05:54:03.673Z",
-      "id": "8ba6"
-    },
-    {
       "id": "f16b",
       "name": "table",
       "sku": "ghj",
@@ -153,6 +166,439 @@
       "description": "adsfgh",
       "created_at": "2025-05-27T06:05:53.136Z",
       "updated_at": "2025-05-27T06:05:53.136Z"
+    },
+    {
+      "id": "0c56",
+      "name": "computer",
+      "sku": "uyu",
+      "category_id": "21",
+      "price": "788",
+      "description": "gyjnkmnjb",
+      "created_at": "2025-05-29T17:46:00.302Z",
+      "updated_at": "2025-05-29T17:46:00.302Z"
+    },
+    {
+      "id": "ea08",
+      "name": "sofa",
+      "sku": "SO21",
+      "category_id": "22",
+      "price": "67876",
+      "description": "b nmn",
+      "created_at": "2025-05-30T07:38:19.708Z",
+      "updated_at": "2025-05-30T07:38:19.708Z"
+    }
+  ],
+  "carousel": [
+    {
+      "id": "1",
+      "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img22/Unrec/TallHero_3000X1200_Unrec._CB593464763_.jpg",
+      "name": "Watch"
+    },
+    {
+      "id": "2",
+      "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img22/Wireless/devjyoti/GW/Uber/Nov/uber_new_high._CB537689643_.jpg",
+      "name": "smartphone"
+    },
+    {
+      "id": "3",
+      "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30001._CB542120021_.jpg",
+      "name": "men'shoes"
+    },
+    {
+      "id": "4",
+      "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30003._CB542120021_.jpg",
+      "name": "Water botle"
+    },
+    {
+      "id": "5",
+      "image": "https://images-eu.ssl-images-amazon.com/images/G/31/sthaneka/SVM/ncq/2X_buasdhuif._CB795788272_.jpg",
+      "name": "Water botle"
+    }
+  ],
+  "cart": [],
+  "Inventory": [
+    {
+      "product_id": 1,
+      "product_variant_id": 1,
+      "quantity": "5",
+      "location": "Pune",
+      "lastUp": 1747994521210,
+      "id": "1"
+    },
+    {
+      "product_id": 2,
+      "product_variant_id": 2,
+      "quantity": "60",
+      "location": "Indore",
+      "lastUp": 1748246384730,
+      "id": "2"
+    },
+    {
+      "product_id": 3,
+      "product_variant_id": 3,
+      "quantity": "45",
+      "location": "delhi",
+      "lastUp": 1747996393486,
+      "id": "3"
+    },
+    {
+      "product_id": 4,
+      "product_variant_id": 4,
+      "quantity": "21",
+      "location": "fff",
+      "lastUp": 1747996404507,
+      "id": "4"
+    },
+    {
+      "product_id": "5",
+      "product_variant_id": "5",
+      "quantity": "23g",
+      "location": "uttarakhand",
+      "lastUp": 1748016147628,
+      "id": "5"
+    },
+    {
+      "product_id": "6",
+      "product_variant_id": "6",
+      "quantity": "123kg",
+      "location": "bhopal",
+      "lastUp": 1748016173615,
+      "id": "6"
+    }
+  ],
+  "product_variant": [
+    {
+      "id": "4393",
+      "variant_name": "iphone16",
+      "variant_value": "blue",
+      "price": "100000",
+      "product_id": "581c"
+    },
+    {
+      "id": "4f3f",
+      "variant_name": "yellow",
+      "variant_value": "sm",
+      "price": "650",
+      "product_id": "2"
+    },
+    {
+      "id": "0863",
+      "variant_name": "5",
+      "variant_value": "orange",
+      "price": "2000",
+      "product_id": "f293"
+    },
+    {
+      "id": "5731",
+      "variant_name": "xl",
+      "variant_value": "orange",
+      "price": "300",
+      "product_id": "2"
+    },
+    {
+      "id": "9701",
+      "variant_name": "iphone17pro",
+      "variant_value": "ligthblue",
+      "price": "120000",
+      "product_id": "581c"
+    },
+    {
+      "id": "7eb2",
+      "variant_name": "xxl",
+      "variant_value": "narangi",
+      "price": "645",
+      "product_id": "2"
+    },
+    {
+      "id": "f087",
+      "variant_name": "5seater",
+      "variant_value": "green",
+      "price": "7879",
+      "product_id": "ea08"
+    },
+    {
+      "id": "a5a8",
+      "variant_name": "2",
+      "variant_value": "gold",
+      "price": "300",
+      "product_id": "e346"
+    },
+    {
+      "id": "9b38",
+      "variant_name": "colour",
+      "variant_value": "silver",
+      "price": "4000",
+      "product_id": "f293"
+    }
+  ],
+  "order": [
+    {
+      "id": "f4cd",
+      "user_phone_no": "678",
+      "status": "complete",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "667",
+      "payment_mode": "cash_amount",
+      "cash_amount": "432",
+      "online_amount": "",
+      "order_date": "2025-06-02",
+      "updated_at": "2025-06-04",
+      "items": [
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "100000"
+        },
+        {
+          "product_id": "e346",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "300"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "120000"
+        }
+      ]
+    },
+    {
+      "id": "66a5",
+      "user_phone_no": "-5",
+      "status": "pending",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "434",
+      "payment_mode": "cash_amount",
+      "cash_amount": "431",
+      "online_amount": "",
+      "order_date": "2025-06-10",
+      "updated_at": "2025-06-18",
+      "items": [
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "100000"
+        },
+        {
+          "product_id": "e346",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "300"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "120000"
+        }
+      ]
+    },
+    {
+      "id": "fb7a",
+      "user_phone_no": "5678",
+      "status": "complete",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "56789",
+      "payment_mode": "cash_amount",
+      "cash_amount": "56789",
+      "online_amount": "",
+      "order_date": "2025-06-19",
+      "updated_at": "2025-06-17",
+      "items": [
+        {
+          "product_id": "2",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "300"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "100000"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "120000"
+        }
+      ]
+    },
+    {
+      "id": "9fb9",
+      "user_phone_no": "5678",
+      "status": "pending",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "5678",
+      "payment_mode": "cash_amount",
+      "cash_amount": "5668",
+      "online_amount": "",
+      "order_date": "2025-06-10",
+      "updated_at": "2025-06-19",
+      "items": [
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "100000"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "120000"
+        },
+        {
+          "product_id": "2",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "650"
+        }
+      ]
+    },
+    {
+      "id": "fad0",
+      "user_phone_no": "8817173983",
+      "status": "complete",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "45678",
+      "payment_mode": "cash_amount",
+      "cash_amount": "234567",
+      "online_amount": "",
+      "order_date": "2025-06-16",
+      "updated_at": "2025-06-17",
+      "items": [
+        {
+          "product_id": "581c",
+          "variant_id": "N/A",
+          "quantity": 4,
+          "price": "100000"
+        },
+        {
+          "product_id": "e346",
+          "variant_id": "N/A",
+          "quantity": 4,
+          "price": "300"
+        }
+      ]
+    },
+    {
+      "id": "a31f",
+      "user_phone_no": "87887655",
+      "status": "pending",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "2029.55",
+      "payment_mode": "cash_amount",
+      "cash_amount": "2029.55",
+      "online_amount": "",
+      "order_date": "2025-06-09",
+      "updated_at": "2025-06-17",
+      "items": [
+        {
+          "product_id": "2",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "650"
+        },
+        {
+          "product_id": "2",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "300"
+        },
+        {
+          "product_id": "2",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "645"
+        },
+        {
+          "product_id": "e346",
+          "variant_id": "N/A",
+          "quantity": 1,
+          "price": "300"
+        }
+      ]
+    },
+    {
+      "id": "6895",
+      "user_phone_no": "678987642",
+      "status": "complete",
+      "discount": "10%",
+      "tax": "19%",
+      "total_amount": "514770.79",
+      "payment_mode": "online_upi",
+      "cash_amount": "",
+      "online_amount": "456765",
+      "order_date": "2025-06-01",
+      "updated_at": "2025-06-01",
+      "items": [
+        {
+          "product_id": "2",
+          "variant_id": "4393",
+          "quantity": 1,
+          "price": "645"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "4393",
+          "quantity": 2,
+          "price": "120000"
+        },
+        {
+          "product_id": "581c",
+          "variant_id": "4393",
+          "quantity": 2,
+          "price": "120000"
+        }
+      ]
+    }
+  ],
+  "order_item": [
+    {
+      "id": "7eb2",
+      "variant_name": "xxl",
+      "variant_value": "narangi",
+      "price": "645",
+      "product_id": "2"
+    },
+    {
+      "id": "9701",
+      "variant_name": "iphone17pro",
+      "variant_value": "ligthblue",
+      "price": "120000",
+      "product_id": "581c"
+    },
+    {
+      "id": "9701",
+      "variant_name": "iphone17pro",
+      "variant_value": "ligthblue",
+      "price": "120000",
+      "product_id": "581c"
+    },
+    {
+      "id": "4f3f",
+      "variant_name": "yellow",
+      "variant_value": "sm",
+      "price": "650",
+      "product_id": "2"
+    },
+    {
+      "id": "4393",
+      "variant_name": "iphone16",
+      "variant_value": "blue",
+      "price": "100000",
+      "product_id": "581c"
     }
     
   ],
