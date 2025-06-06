@@ -11,7 +11,7 @@ const Carousel = () => {
       setDataprev(res.data);
     });
   };
-
+       
   useEffect(() => {
     getData();
   }, []);
