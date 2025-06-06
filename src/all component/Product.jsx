@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar.jsx';
 import moment from 'moment';
-
+// import Carousel from "./Carousel.jsx"
 const Main = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
@@ -107,7 +107,7 @@ const Main = () => {
       <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} />
 
       <div className="min-h-screen w-full bg-slate-200 p-4 flex flex-wrap gap-4">
-        <div className="fixed top-[15%] flex justify-center items-center">
+        <div className="fixed top-[10%] flex justify-center items-center">
           <form
             onSubmit={sub}
             className="bg-gradient-to-r from-slate-300 via-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[95vw]"
@@ -164,8 +164,7 @@ const Main = () => {
             )}
           </form>
         </div>
-
-        <div className="flex absolute top-[30%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
+        <div className="flex absolute top-[27%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
           {filterdata.map((v) => (
             <div
               key={v.id}

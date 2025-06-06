@@ -154,5 +154,34 @@
       "created_at": "2025-05-27T06:05:53.136Z",
       "updated_at": "2025-05-27T06:05:53.136Z"
     }
-  ]
+    
+  ],
+   "carousel":[
+     {
+    "id":1,
+    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img22/Unrec/TallHero_3000X1200_Unrec._CB593464763_.jpg",
+    "name":"Watch"
+   },{
+     "id":2,
+     "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img22/Wireless/devjyoti/GW/Uber/Nov/uber_new_high._CB537689643_.jpg",
+     "name":"smartphone"
+   },
+   {
+    "id":3,
+    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30001._CB542120021_.jpg",
+    "name":"men'shoes"
+   },
+    {
+    "id":4,
+    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30003._CB542120021_.jpg",
+    "name":"Water botle"
+   },
+     {
+    "id":5,
+    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/sthaneka/SVM/ncq/2X_buasdhuif._CB795788272_.jpg",
+    "name":"Water botle"
+   }
+   
+]
+ 
 }
