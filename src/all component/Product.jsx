@@ -2,8 +2,12 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar.jsx';
 import moment from 'moment';
+ 
+// import Carousel from "./Carousel.jsx"
+ 
 import Newcarousel from "./NewCarousel.jsx";
 
+ 
 const Main = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
@@ -147,6 +151,55 @@ const Main = () => {
 
   return (
     <>
+ 
+      <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} />
+
+      <div className="min-h-screen w-full bg-slate-200 p-4 flex flex-wrap gap-4">
+        <div className="fixed top-[10%] flex justify-center items-center">
+          <form
+            onSubmit={sub}
+            className="bg-gradient-to-r from-slate-300 via-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[95vw]"
+          >
+            <input
+              className="bg-emerald-900 py-1 px-2 w-full text-white"
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              className="bg-emerald-900 py-1 px-2 w-full text-white"
+              type="text"
+              placeholder="SKU"
+              value={sku}
+              onChange={(e) => setSku(e.target.value)}
+            />
+            <input
+              className="bg-emerald-900 py-1 px-2 w-full text-white"
+              type="number"
+              placeholder="Category ID"
+              value={category_id}
+              onChange={(e) => setCategoryId(e.target.value)}
+            />
+            <input
+              className="bg-emerald-900 py-1 px-2 w-full text-white"
+              type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <textarea
+              className="bg-emerald-900 py-1 px-2 w-full text-white"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-yellow-600 rounded-lg px-6 py-1 text-white font-bold"
+            >
+              {updateActive ? "Update" : "Add"}
+ 
       <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} sortdata={setsort} />
       <Newcarousel />
 
@@ -167,6 +220,7 @@ const Main = () => {
           {updateActive && (
             <button type="button" onClick={resetForm} className="bg-red-700 hover:bg-red-800 text-white w-full py-1 rounded">
               Cancel
+ 
             </button>
           )}
         </form>
@@ -196,6 +250,13 @@ const Main = () => {
             </button>
           </div>
         </div>
+ 
+        <div className="flex absolute top-[27%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
+          {filterdata.map((v) => (
+            <div
+              key={v.id}
+              className="w-[300px] h-[320px] flex flex-col font-serif bg-white text-black p-4 rounded-lg"
+ 
       )}
 
       <div className="flex absolute top-[60%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
@@ -219,6 +280,7 @@ const Main = () => {
               type="button"
               onClick={() => openVariantModal(v)}
               className="mt-3 bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 transition"
+ 
             >
               Add / Show Variants
             </button>
