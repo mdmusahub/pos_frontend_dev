@@ -25,7 +25,7 @@ let menu =()=>{
 // setismenu(false)
   return (
     <>
-      <nav className="fixed top-0 z-50 h-[60px]  flex items-center bg-white justify-between px-10 w-full shadow-md">
+      <nav className="fixed top-0 z-50 h-[60px]  flex items-center bg-white justify-between px-10 w-full shadow-md" onMouseEnter={()=>{setismenu(false)}}>
         <div className="flex items-center gap-10">
           <Link to="/" className="font-extrabold text-3xl flex items-center gap-1">
             <span className="text-green-800">Blinkit</span>
@@ -63,14 +63,6 @@ let menu =()=>{
     <FaRegUser />}
   </div>
   </Link>
-      {/* <Link className="h-[]" to={'signup'}>
-    <div className='bg-blue-500 py-1 text-center flex  items-center rounded text-white text-xl px-3'>
-    <h3>SignUp</h3>
-  </div> 
-     {/* </Link>
-  <div className='bg-blue-500  text-center flex py-1 rounded items-center text-white text-xl px-3'>
-    <h3 onClick={()=>{logout()}}>Logout</h3>
-</div> */}
 
         <Link to="/addcart">
           <div className="absolute left-[1350px] top-1">

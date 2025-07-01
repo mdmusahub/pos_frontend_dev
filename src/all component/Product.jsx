@@ -16,7 +16,7 @@ const Main = () => {
   const [variantModalOpen, setVariantModalOpen] = useState(false);
   const [selectedProductForVariant, setSelectedProductForVariant] = useState(null);
   const [quantities, setQuantities] = useState({})
-  const[sort,setsort]=useState("");
+  const [sort,setsort]=useState("");
   const [inventorydata,setInventorydata ] = useState([]);
   const [ismenu,setismenu ] = useState(false);
 
@@ -225,7 +225,7 @@ navigate('/Additems')
         </div>
       )}
 
-      <div onClick={()=>{setismenu(false)}} className="flex absolute top-[10%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
+      <div onMouseEnter={()=>{setismenu(false)}} className="flex absolute top-[10%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
         {sortproduct.map((v,i) => (
           <div key={v.productId} className="w-[300px] h-72 bg-white text-black p-4 rounded-lg shadow-md font-serif relative">
             <NavLink to={`/pr/${v.productId}`}>
@@ -244,8 +244,8 @@ navigate('/Additems')
 
 
         ))}
-        <NavLink to={'Additems'} className='w-[200px]'>
-      <button onClick={()=>{setUpdateActive(false)}} className='mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 h-[40px] w-[350px] cursor-pointer'>Add all products inventory category variants</button>
+        <NavLink to={'Additems'} className='w-fit h-[40px]'>
+      <button onClick={()=>{setUpdateActive(false)}} className='mt-3 bg-blue-600 text-white px-4 rounded hover:bg-blue-700 h-[100%] w-[100%] cursor-pointer'>Add all products inventory category variants</button>
         </NavLink>
       </div>
        </div>

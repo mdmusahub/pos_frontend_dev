@@ -136,8 +136,8 @@ if(obj.variantRequests.length!==0 && productName!=="" && sku!=="" && categoryId!
  setvariantprice("")
  setinventoryquantity("")
  setinventorylocation("")
-
-
+ 
+ window.alert("Product added successfully ") 
   });
 
 }
@@ -193,11 +193,11 @@ else if(categoryId==""){
  setCategoryId(null)
  setvariantsarray([])
  setCategoryId("")
+ setinventoryquantity("")
+ setinventorylocation("")
  setvariantName("")
  setvariantValue("")
  setvariantprice("")
- setinventoryquantity("")
- setinventorylocation("")
 
 window.alert("please select category name") 
 }
@@ -236,6 +236,7 @@ let obj={
 }
 console.log(obj,'assssssssssssssssssssssssssssssss')
 
+if(productName!=="" && sku!=="" && categoryId!=="" && description!==""){
   axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/updateAllDetails/${productId}`, obj).then(() => {
 
  setName("")
@@ -251,9 +252,61 @@ console.log(obj,'assssssssssssssssssssssssssssssss')
  setinventorylocation("")
  setinventoryquantity("")
  setUpdateActive(false)
-
+window.alert("Product updated successfully") 
 
   });
+
+}
+else if(productName==""){
+
+ setName("") 
+ setSku("")
+ setDescription("")
+ setCategoryId(null)
+ setvariantsarray([])
+ setCategoryId("")
+ setinventoryquantity("")
+ setinventorylocation("")
+ setupdatevariantName("")
+ setupdatevariantValue("")
+ setupdatevariantprice("")
+
+window.alert("please enter Product name") 
+}
+else if(sku==""){
+
+ setName("") 
+ setSku("")
+ setDescription("")
+ setCategoryId(null)
+ setvariantsarray([])
+ setCategoryId("")
+ setinventoryquantity("")
+ setinventorylocation("")
+ setupdatevariantName("")
+ setupdatevariantValue("")
+ setupdatevariantprice("")
+
+window.alert("please enter sku id") 
+}
+else if(description==""){
+
+ setName("") 
+ setSku("")
+ setDescription("")
+ setCategoryId(null)
+ setvariantsarray([])
+ setCategoryId("")
+ setinventoryquantity("")
+ setinventorylocation("")
+ setupdatevariantName("")
+ setupdatevariantValue("")
+ setupdatevariantprice("")
+
+window.alert("please enter description") 
+}
+
+
 
 }
 
@@ -300,6 +353,7 @@ setinventorylocation("")
 
 function updateinventory(e){
  e.preventDefault()
+ if(updatevariantName!=="" && updatevariantValue!=="" && updatevariantprice!=="" && inventorylocation!=="" && inventoryquantity!==""){
  productvariants.splice(index,1,{variantName:updatevariantName,variantValue:updatevariantValue,variantprice:updatevariantprice,variantproductId:updatevariantproductId,inventorylocation:inventorylocation,inventoryquantity:inventoryquantity})   
 setproductvariants([...productvariants])
 setupdatevariantName("")
@@ -307,6 +361,47 @@ setupdatevariantValue("")
 setupdatevariantprice("")
 setinventorylocation("")
 setinventoryquantity("")
+}
+else if(updatevariantName==""){
+setupdatevariantName("")
+setupdatevariantValue("")
+setupdatevariantprice("")
+setinventorylocation("")
+setinventoryquantity("")
+window.alert("please enter variant name ")
+}
+else if(updatevariantValue==""){
+setupdatevariantName("")
+setupdatevariantValue("")
+setupdatevariantprice("")
+setinventorylocation("")
+setinventoryquantity("")
+window.alert("please enter variant value ")
+}
+else if(updatevariantprice==""){
+setupdatevariantName("")
+setupdatevariantValue("")
+setupdatevariantprice("")
+setinventorylocation("")
+setinventoryquantity("")
+window.alert("please enter variant price ")
+}
+else if(inventorylocation==""){
+setupdatevariantName("")
+setupdatevariantValue("")
+setupdatevariantprice("")
+setinventorylocation("")
+setinventoryquantity("")
+window.alert("please enter inventory location ")
+}
+else if(inventoryquantity==""){
+setupdatevariantName("")
+setupdatevariantValue("")
+setupdatevariantprice("")
+setinventorylocation("")
+setinventoryquantity("")
+window.alert("please enter inventory quantity ")
+}
 
 }
 
