@@ -6,6 +6,9 @@ import Variant from "./all component/Variant"
 import Signup from "./all component/Signup"
 import Login from "./all component/Login"
 import Protected from "./all component/Protected"
+import Order from "./all component/Orders"
+import Singleproduct from "./all component/Singleproduct"
+import Discount from "./all component/Discount"
 function App() {
 
   return (
@@ -21,7 +24,9 @@ function App() {
             {/* </Route> */}
             <Route  path="/signup/" element={<Signup/>}/>
             <Route  path="/login/" element={<Login/>}/>
-           
+            <Route path="/order" element={<Order/>}/>
+            <Route path="pr/:id" element={<Singleproduct/>}/>
+            <Route path="/discount/" element={<Discount/>}/>
             
 
            </Routes>

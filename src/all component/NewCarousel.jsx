@@ -26,7 +26,7 @@ const Carousel = () => {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
-      <div className="relative h-[400px] w-[1200px] overflow-hidden  bg-blue-400 rounded-xl shadow-xl">
+      <div className="relative h-[600px] w-[1200px] overflow-hidden  bg-blue-400 rounded-xl shadow-xl">
         {dataprev.length > 0 && (
           <img
             key={dataprev[indexprev].id}

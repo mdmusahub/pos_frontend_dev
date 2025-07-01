@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+import { AppContext } from './Contextapi'
+import { useContext } from 'react'
 
 const Variant = () => {
   const [variants, setVariants] = useState([]);
@@ -10,20 +12,28 @@ const Variant = () => {
   const [price, setPrice] = useState('');
   const [productId, setProductId] = useState('');
   const [editId, setEditId] = useState(null); // For editing
+ const[sort,setsort]=useState("");
 
+ let data = useContext(AppContext)
+const [token,settoken,count,setcount,user,setuser,Base_url_]=data
   useEffect(() => {
     fetchVariants();
     fetchProducts();
   }, []);
 
   const fetchVariants = () => {
-    axios.get('http://localhost:3000/product_variant').then((res) => {
+    axios.get(`${Base_url_}/productVariant/getAll`,{
+      headers:{'ngrok-skip-browser-warning':'true'}
+    }).then((res) => {
       setVariants(res.data);
+      console.log(res.data)
     });
   };
 
   const fetchProducts = () => {
-    axios.get('http://localhost:3000/product').then((res) => {
+    axios.get(`${Base_url_}/product/getAll`,{
+      headers:{'ngrok-skip-browser-warning':'true'},
+    }).then((res) => {
       setProducts(res.data);
     });
   };
@@ -31,23 +41,23 @@ const Variant = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const variantData = {
-      variant_name: variantName,
-      variant_value: variantValue,
+      variantName: variantName,
+      variantValue: variantValue,
       price: price,
-      product_id: productId,
+      productId: productId,
     };
 
     if (editId) {
       // Update existing variant
       axios
-        .put(`http://localhost:3000/product_variant/${editId}`, variantData)
+        .put(`${Base_url_}/productVariant/update/${editId}`, variantData)
         .then(() => {
           fetchVariants();
           resetForm();
         });
     } else {
       // Create new variant
-      axios.post('http://localhost:3000/product_variant', variantData).then(() => {
+      axios.post(`${Base_url_}/productVariant/create`, variantData).then(() => {
         fetchVariants();
         resetForm();
       });
@@ -64,23 +74,30 @@ const Variant = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this variant?')) {
-      axios.delete(`http://localhost:3000/product_variant/${id}`).then(() => {
+      axios.delete(`${Base_url_}/productVariant/delete/${id}`).then(() => {
         fetchVariants();
       });
     }
   };
 
   const handleEdit = (variant) => {
-    setVariantName(variant.variant_name);
-    setVariantValue(variant.variant_value);
+    setVariantName(variant.variantName);
+    setVariantValue(variant.variantValue);
     setPrice(variant.price);
-    setProductId(variant.product_id);
-    setEditId(variant.id);
+    setProductId(variant.productId);
+    setEditId(variant.productVariantId);
   };
-
+   let sortproduct=variants.sort((min,max)=>{
+  if(sort==="min-max"){
+    console.log(min.price - max.price)
+    return min.price - max.price
+  }else if (sort==="max-min"){
+    return max.price - min.price
+  }
+})
   return (
     <div className="p-4">
-    <Navbar/>
+    <Navbar sortdata={setsort}/>
 
       <h2 className="text-xl font-bold mb-4">{editId ? 'Edit Variant' : 'Add Variant'}</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow p-4 rounded-lg flex flex-col gap-3 max-w-md">
@@ -92,8 +109,8 @@ const Variant = () => {
         >
           <option value="">Select Product</option>
           {products.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
+            <option key={p.productId} value={p.productId}>
+              {p.productName}
             </option>
           ))}
         </select>
@@ -136,30 +153,32 @@ const Variant = () => {
       <div className="mt-8">
         <h3 className="text-lg font-bold mb-2">All Variants</h3>
         <div className="grid gap-4">
-          {variants.map((v) => {
-            const product = products.find((p) => String(p.id) === String(v.product_id));
-            return (
-              <div key={v.id} className="bg-gray-100 p-3 rounded border">
-                <p><strong>Product:</strong> {product ? product.name : 'Unknown Product'}</p>
-                <p><strong>{v.variant_name}:</strong> {v.variant_value}</p>
-                <p><strong>Price:</strong> ₹{v.price}</p>
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => handleEdit(v)}
-                    className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(v.id)}
-                    className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+        {sortproduct.map((v) => {
+  const product = v.product || products.find((p) => String(p.productId) === String(v.productId));
+
+  return (
+    <div key={v.productVariantId} className="bg-gray-100 p-3 rounded border">
+      <p><strong>Product:</strong> {product?.productName || 'Unknown Product'}</p>
+      <p><strong>{v.variantName}:</strong> {v.variantValue}</p>
+      <p><strong>Price:</strong> ₹{v.price}</p>
+      <div className="flex gap-2 mt-2">
+        <button
+          onClick={() => handleEdit(v)}
+          className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => handleDelete(v.productVariantId)}
+          className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  );
+})}
+
         </div>
       </div>
     </div>

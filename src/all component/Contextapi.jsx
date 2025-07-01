@@ -19,9 +19,9 @@ setuser(localStorage.getItem("user"))
 },[count])
 
 localStorage.setItem("token",JSON.stringify(""))
-
+const Base_url_=`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app`
 return (
-<AppContext.Provider value={[token,settoken,count,setcount,user,setuser]}>{props.children}</AppContext.Provider>
+<AppContext.Provider value={[token,settoken,count,setcount,user,setuser,Base_url_]}>{props.children}</AppContext.Provider>
 )    
 
 

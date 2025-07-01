@@ -1,51 +1,48 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar.jsx';
-import moment from 'moment';
- 
-// import Carousel from "./Carousel.jsx"
- 
-import Newcarousel from "./NewCarousel.jsx";
+import { Link } from 'react-router-dom';
+import { AppContext } from './Contextapi'
+import { useContext } from 'react'
 
- 
 const Main = () => {
   const [data, setData] = useState([]);
-  const [name, setName] = useState("");
+  const [productName, setName] = useState("");
   const [sku, setSku] = useState("");
-  const [category_id, setCategoryId] = useState("");
-  const [price, setPrice] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
   const [updateID, setUpdateID] = useState(null);
   const [updateActive, setUpdateActive] = useState(false);
   const [searchvalue, setsearchvalue] = useState("");
   const [categorydata, setcategorydata] = useState([]);
-  const [variantdata, setvariantdata] = useState([]);
-  const [variantModalOpen, setVariantModalOpen] = useState(false);
-  const [selectedProductForVariant, setSelectedProductForVariant] = useState(null);
- const [quantities, setQuantities] = useState({})
- const[sort,setsort]=useState("");
+
+  let data1 = useContext(AppContext)
+ const [token,settoken,count,setcount,user,setuser,Base_url_]=data1
+
   const getData = () => {
-    axios.get("http://localhost:3000/product").then((res) => setData(res.data));
+    axios.get(`${Base_url_}/product/getAll`,{
+      headers:{'ngrok-skip-browser-warning':'true'},
+    }).then((res) => {
+      setData(res.data)
+      console.log(res.data)
+      console.log(res)
+    });
   };
-
+  
   const getcategorydata = () => {
-    axios.get("http://localhost:3000/Category").then((res) => setcategorydata(res.data));
-  };
-
-  const getvariantdata = () => {
-    axios.get("http://localhost:3000/product_variant").then((res) => setvariantdata(res.data));
+    axios.get(`${Base_url_}/category/getAll`,{
+      headers:{'ngrok-skip-browser-warning':'true'},
+    }).then((res) => {setcategorydata(res.data)});
   };
 
   useEffect(() => {
     getData();
     getcategorydata();
-    getvariantdata();
   }, []);
 
   const del = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      axios.delete(`http://localhost:3000/product/${id}`).then(() => getData());
+      axios.delete(`${Base_url_}/product/delete/${id}`).then(() => getData());
     }
   };
 
@@ -53,7 +50,6 @@ const Main = () => {
     setName("");
     setSku("");
     setCategoryId("");
-    setPrice("");
     setDescription("");
     setUpdateID(null);
     setUpdateActive(false);
@@ -65,154 +61,62 @@ const Main = () => {
   const sub = (e) => {
     e.preventDefault();
     const obj = {
-      name,
+      productName,
       sku,
-      category_id,
-      price,
+      categoryId,
       description,
-      created_at: updateActive ? createdAt : new Date(),
-      updated_at: new Date(),
     };
 
     if (updateActive) {
-      axios.put(`http://localhost:3000/product/${updateID}`, obj).then(() => {
+      axios.put(`${Base_url_}/product/update/${updateID}`, obj).then(() => {
         getData();
         resetForm();
       });
     } else {
-      axios.post("http://localhost:3000/product", obj).then(() => {
+      axios.post(`${Base_url_}/product/create`, obj).then(() => {
         getData();
         resetForm();
       });
     }
   };
 
-  const increase = (id) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: prev[id] + 1
-    }))
-  }
-
-  const decrease = (id) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: prev[id] > 1 ? prev[id] - 1 : dlt(id)
-    }))
-  }
-
   const edit = (v) => {
-    setName(v.name);
+    setName(v.productName);
     setSku(v.sku);
-    setCategoryId(v.category_id);
-    setPrice(v.price);
+    setCategoryId(v.category.categoryId);
     setDescription(v.description);
-    setUpdateID(v.id);
     setUpdateActive(true);
-    setCreatedAt(v.created_at);
-  };
-
-  const openVariantModal = (product) => {
-    setSelectedProductForVariant(product);
-    setVariantModalOpen(true);
   };
 
   const array = data.map((v) => {
-    let category = categorydata.find((k) => String(k.id) === String(v.category_id))
+    let category = categorydata.find((k) => String(k.productId) === String(v.categoryId))
 
     return {
       ...v,
-      category_name: category ? category.name : "Unknown",
+      categoryName: category ? category.categoryName : "Unknown",
     };
   });
 
+
+
   const filterdata = array.filter((product) =>
-    product.name.toLowerCase().includes(searchvalue.toLowerCase())
+    product.productName.toLowerCase().includes(searchvalue.toLowerCase())
   );
-    let sortproduct=filterdata.sort((min,max)=>{
-  if(sort==="min-max"){
-    console.log(min.price - max.price)
-    return min.price - max.price
-  }else if (sort==="max-min"){
-    return max.price - min.price
-  }
-})
 
-  const[cartproduct,setcardpro]=useState({})
 
-  let add = (v)=>{
-    console.log(v);
-    
-    axios.post(`http://localhost:3000/order_item`,v).then((res)=>{
-      console.log(res.data)
-      setcardpro(res.data)
-    })
-  }
 
   return (
     <>
- 
+     <div className='flex justify-center items-center'>
       <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} />
-
-      <div className="min-h-screen w-full bg-slate-200 p-4 flex flex-wrap gap-4">
-        <div className="fixed top-[10%] flex justify-center items-center">
-          <form
-            onSubmit={sub}
-            className="bg-gradient-to-r from-slate-300 via-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[95vw]"
-          >
-            <input
-              className="bg-emerald-900 py-1 px-2 w-full text-white"
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              className="bg-emerald-900 py-1 px-2 w-full text-white"
-              type="text"
-              placeholder="SKU"
-              value={sku}
-              onChange={(e) => setSku(e.target.value)}
-            />
-            <input
-              className="bg-emerald-900 py-1 px-2 w-full text-white"
-              type="number"
-              placeholder="Category ID"
-              value={category_id}
-              onChange={(e) => setCategoryId(e.target.value)}
-            />
-            <input
-              className="bg-emerald-900 py-1 px-2 w-full text-white"
-              type="number"
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <textarea
-              className="bg-emerald-900 py-1 px-2 w-full text-white"
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="bg-yellow-600 rounded-lg px-6 py-1 text-white font-bold"
-            >
-              {updateActive ? "Update" : "Add"}
- 
-      <Navbar searchQuery={searchvalue} setSearchQuery={setsearchvalue} sortdata={setsort} />
-      <Newcarousel />
-
-      {/* Form */}
       <div className="fixed top-[10%] flex justify-center items-center z-10">
         <form
           onSubmit={sub}
           className="bg-gradient-to-r from-slate-300 to-slate-300 p-4 rounded-lg flex items-center gap-3 w-[100vw]"
         >
-          <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="text" placeholder="Name" value={productName} onChange={(e) => setName(e.target.value)} />
           <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="text" placeholder="SKU" value={sku} onChange={(e) => setSku(e.target.value)} />
-          <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="number" placeholder="Category ID" value={category_id} onChange={(e) => setCategoryId(e.target.value)} />
-          <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
+          <input className="bg-emerald-900 py-1 px-2 w-full text-white" type="number" placeholder="Category ID" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} />
           <textarea className="bg-emerald-900 py-1 px-2 w-full text-white" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
           <button type="submit" className="bg-yellow-600 rounded-lg px-6 py-1 text-white font-bold">
             {updateActive ? "Update" : "Add"}
@@ -220,73 +124,30 @@ const Main = () => {
           {updateActive && (
             <button type="button" onClick={resetForm} className="bg-red-700 hover:bg-red-800 text-white w-full py-1 rounded">
               Cancel
- 
             </button>
           )}
         </form>
       </div>
 
-      {variantModalOpen && selectedProductForVariant && (
-        <div className="fixed inset-10 backdrop-blur-sm bg-white/10 z-50 flex items-center justify-center">
-          <div className="bg-white w-[90vw] max-w-md p-4 rounded-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-3">Variants for {selectedProductForVariant.name}</h2>
-            <div className="max-h-48 overflow-y-auto space-y-2">
-              {variantdata
-                .filter(variant => String(variant.product_id) === String(selectedProductForVariant.id))
-                .map((variant) => (
-                  <div key={variant.id} className="bg-gray-100 p-2 rounded shadow-sm text-sm">
-                    <p><strong>{variant.variant_name}</strong> <button></button> : {variant.variant_value}</p> 
-                   <div className='flex justify-between'>
-                    <p>Price: ₹{variant.price}</p> 
-                   <button className='bg-green-700 pl-7 pr-7 py-2 text-white' onClick={()=>add(variant)}>Add
-
-                   </button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-            <button onClick={() => setVariantModalOpen(false)} className="mt-4 bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 text-sm">
-              Close
-            </button>
-          </div>
-        </div>
- 
-        <div className="flex absolute top-[27%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
-          {filterdata.map((v) => (
-            <div
-              key={v.id}
-              className="w-[300px] h-[320px] flex flex-col font-serif bg-white text-black p-4 rounded-lg"
- 
-      )}
-
-      <div className="flex absolute top-[60%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
-        {sortproduct.map((v) => (
-          <div key={v.id} className="w-[300px] bg-white text-black p-4 rounded-lg shadow-md font-serif relative">
-            <p><strong>ID:</strong> {v.id}</p>
-            <p><strong>Name:</strong> {v.name}</p>
+      <div className="flex absolute top-[20%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
+        {filterdata.map((v,i) => (
+          <div key={v.productId} className="w-[300px] h-72 bg-white text-black p-4 rounded-lg shadow-md font-serif relative">
+           <Link to = {`/pr/${v.productId}`}> <p><strong>Name:</strong> {v.productName}</p>
             <p><strong>SKU:</strong> {v.sku}</p>
-            <p><strong>Category:</strong> {v.category_name}</p>
-            <p><strong>Price:</strong> ₹{v.price}</p>
+            <p><strong>Category:</strong> {v.category.name}</p>
+            
             <p><strong>Description:</strong> {v.description}</p>
-            <p><strong>Created At:</strong> {moment(v.created_at).format("MMM Do YYYY, h:mm:ss a")}</p>
-            <p><strong>Updated At:</strong> {moment(v.updated_at).format("MMM Do YYYY, h:mm:ss a")}</p>
+            </Link>
 
             <div className="mt-2 flex justify-center gap-3">
               <button onClick={() => edit(v)} className="bg-green-900 text-white px-4 py-1 rounded">Edit</button>
-              <button onClick={() => del(v.id)} className="bg-yellow-600 text-white px-4 py-1 rounded">Delete</button>
+              <button onClick={() => del(v.productId)} className="bg-yellow-600 text-white px-4 py-1 rounded">Delete</button>
+              
             </div>
-
-            <button
-              type="button"
-              onClick={() => openVariantModal(v)}
-              className="mt-3 bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 transition"
- 
-            >
-              Add / Show Variants
-            </button>
           </div>
         ))}
       </div>
+       </div>
     </>
   );
 };
