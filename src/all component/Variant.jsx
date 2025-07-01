@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 const Variant = () => {
   const [variants, setVariants] = useState([]);
   const [products, setProducts] = useState([]);
@@ -17,13 +18,18 @@ const Variant = () => {
   }, []);
 
   const fetchVariants = () => {
-    axios.get('http://localhost:3000/product_variant').then((res) => {
+    axios.get('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll', {
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    }).then((res) => {
       setVariants(res.data);
+      console.log(res.data)
     });
   };
 
   const fetchProducts = () => {
-    axios.get('http://localhost:3000/product').then((res) => {
+    axios.get('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll', {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    }).then((res) => {
       setProducts(res.data);
     });
   };
@@ -31,23 +37,21 @@ const Variant = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const variantData = {
-      variant_name: variantName,
-      variant_value: variantValue,
+      variantName: variantName,
+      variantValue: variantValue,
       price: price,
-      product_id: productId,
+      productId: productId,
     };
 
     if (editId) {
-      // Update existing variant
       axios
-        .put(`http://localhost:3000/product_variant/${editId}`, variantData)
+        .put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/update/${editId}`, variantData)
         .then(() => {
           fetchVariants();
           resetForm();
         });
     } else {
-      // Create new variant
-      axios.post('http://localhost:3000/product_variant', variantData).then(() => {
+      axios.post('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/create', variantData).then(() => {
         fetchVariants();
         resetForm();
       });
@@ -64,23 +68,28 @@ const Variant = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this variant?')) {
-      axios.delete(`http://localhost:3000/product_variant/${id}`).then(() => {
+      axios.delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/delete/${id}`).then(() => {
         fetchVariants();
       });
     }
   };
 
   const handleEdit = (variant) => {
-    setVariantName(variant.variant_name);
-    setVariantValue(variant.variant_value);
+    setVariantName(variant.variantName);
+    setVariantValue(variant.variantValue);
     setPrice(variant.price);
-    setProductId(variant.product_id);
-    setEditId(variant.id);
+    setProductId(variant.productId);
+    setEditId(variant.productVariantId);
   };
+        const [ismenu, setismenu] = useState(false);
+    
+    return (
 
-  return (
-    <div className="p-4">
-    <Navbar/>
+<>   
+   <Navbar ismenu={ismenu} setismenu={setismenu}  /> 
+<div onClick={()=>{setismenu(false)}} className='min-h-screen w-full '>
+   
+ <div className="p-4">
 
       <h2 className="text-xl font-bold mb-4">{editId ? 'Edit Variant' : 'Add Variant'}</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow p-4 rounded-lg flex flex-col gap-3 max-w-md">
@@ -92,8 +101,8 @@ const Variant = () => {
         >
           <option value="">Select Product</option>
           {products.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
+            <option key={p.productId} value={p.productId}>
+              {p.productName}
             </option>
           ))}
         </select>
@@ -137,24 +146,26 @@ const Variant = () => {
         <h3 className="text-lg font-bold mb-2">All Variants</h3>
         <div className="grid gap-4">
           {variants.map((v) => {
-            const product = products.find((p) => String(p.id) === String(v.product_id));
+            const product = products.find((p) => String(p.productId) === String(v.productVariantId));
+            console.log(v.productproductName)
             return (
-              <div key={v.id} className="bg-gray-100 p-3 rounded border">
-                <p><strong>Product:</strong> {product ? product.name : 'Unknown Product'}</p>
-                <p><strong>{v.variant_name}:</strong> {v.variant_value}</p>
+              <div key={v.productVariantId} className="bg-gray-100 p-3 rounded border">
+                <p><strong>Product:</strong> {v.product.productName}</p>
+                <p><strong>{v.variantName}:</strong> {v.variantValue}</p>
                 <p><strong>Price:</strong> ₹{v.price}</p>
                 <div className="flex gap-2 mt-2">
                   <button
                     onClick={() => handleEdit(v)}
                     className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
                   >
-                    Edit
+                   <CiEdit />
                   </button>
                   <button
-                    onClick={() => handleDelete(v.id)}
+                    onClick={() => handleDelete(v.productVariantId)}
                     className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
-                    Delete
+                   <MdDelete />
+
                   </button>
                 </div>
               </div>
@@ -163,7 +174,10 @@ const Variant = () => {
         </div>
       </div>
     </div>
-  );
+    </div>
+    </>
+
+    );
 };
 
-export default Variant;
+    export default Variant;

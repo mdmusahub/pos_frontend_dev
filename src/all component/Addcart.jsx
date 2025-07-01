@@ -1,318 +1,277 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import Navbar from './Navbar'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ADDCART = () => {
-  const [data, setData] = useState([])
-  const [products, setProducts] = useState([])
-  const [variants, setVariants] = useState([])
-  const [quantities, setQuantities] = useState({})
-  const [no, setNo] = useState('')
-  const [status, setStatus] = useState('pending')
-  const [dis, setDis] = useState('10%')
-  const [tax, setTax] = useState('19%')
-  const [totalAmount, setTotalAmount] = useState(0)
-  const [payment, setPayment] = useState('cash_amount')
-  const [cashAmount, setCashAmount] = useState('')
-  const [onlineAmount, setOnlineAmount] = useState('')
-  const [orderDate, setOrderDate] = useState('')
-  const [update, setUpdate] = useState('')
+  const [products, setProducts] = useState([]);
+  const [variants, setVariants] = useState([]);
+  const [filteredVariants, setFilteredVariants] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [currentQuantity, setCurrentQuantity] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [no, setNo] = useState('');
+  const [payment, setPayment] = useState('CASH');
+  const [cashAmount, setCashAmount] = useState('');
+  const [onlineAmount, setOnlineAmount] = useState('');
+  const [orderDate, setOrderDate] = useState('');
+  const [dis, setDis] = useState('');
+  const [tax, setTax] = useState('19%');
+  const [status, setStatus] = useState('PENDING');
+  const [update, setUpdate] = useState('');
+  const [inventory, setInventory] = useState([]);
+  const [discountData, setDiscountData] = useState([]);
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  // Fetch order items and initialize quantities
-  const get = () => {
-    axios.get("http://localhost:3000/order_item").then((res) => {
-      setData(res.data)
+  const headers = { 'ngrok-skip-browser-warning': 'true' };
 
-      // Initialize quantities for each item as 1 if not set
-      const qty = {}
-      res.data.forEach(item => {
-        qty[item.id] = quantities[item.id] || 1
-      })
-      setQuantities(qty)
-    })
-  }
 
   useEffect(() => {
-    get()
-    axios.get('http://localhost:3000/product').then((res) => setProducts(res.data))
-    axios.get('http://localhost:3000/product_variant').then((res) => setVariants(res.data))
-  }, [])
+    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll`, { headers }).then(r => setProducts(r.data));
+    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll`, { headers }).then(r => setVariants(r.data));
+    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll`, { headers }).then(r => setInventory(r.data));
+    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/getAll`, { headers }).then(r => setDiscountData(r.data));
+  }, []);
 
   useEffect(() => {
-    const sum = data.reduce((acc, item) => {
-      const qty = quantities[item.id] || 1
-      return acc + item.price * qty
-    }, 0)
+    if (selectedProduct && variants.length) {
+      const filtered = variants.filter(v => v.product.productId === selectedProduct.value);
+      setFilteredVariants(filtered);
+    } else {
+      setFilteredVariants([]);
+    }
+    setSelectedVariant(null);
+  }, [selectedProduct, variants]);
 
-    let discountPercent = 0
-    let taxPercent = 0
+  useEffect(() => {
+    if (selectedVariant) {
+      const now = new Date();
 
-    if (dis.includes('%')) discountPercent = parseFloat(dis) / 100
-    if (tax.includes('%')) taxPercent = parseFloat(tax) / 100
+      const activeDiscount = discountData.find(d =>
+        d.variant?.productVariantId === selectedVariant.value &&
+        d.isActive &&
+        new Date(d.startDateTime) <= now &&
+        new Date(d.endDateTime) >= now
+      );
 
-    let discounted = sum - sum * discountPercent
-    let taxed = discounted + discounted * taxPercent
-
-    setTotalAmount(taxed.toFixed(2))
-  }, [data, quantities, dis, tax])
-
-  const dlt = (id) => {
-    axios.delete(`http://localhost:3000/order_item/${id}`).then(() => {
-      get()
-      setQuantities(prev => {
-        const {[id]: _, ...rest} = prev
-        return rest
-      })
-    })
-  }
-
-  const increase = (id) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: (prev[id] || 1) + 1
-    }))
-  }
-
-  const decrease = (id) => {
-    setQuantities(prev => {
-      const currentQty = prev[id] || 1
-      if (currentQty > 1) {
-        return { ...prev, [id]: currentQty - 1 }
+      if (activeDiscount) {
+        setDis(activeDiscount.waiverMode === 'PERCENT'
+          ? `${activeDiscount.discountValue}%`
+          : `${activeDiscount.discountValue}`);
       } else {
-        dlt(id)
-        const { [id]: _, ...rest } = prev
-        return rest
+        setDis('');
       }
-    })
-  }
-
-  const cartItems = data.map((item) => {
-    const product = products.find(p => p.id === item.product_id)
-    const variant = variants.find(v => v.variant_id === item.variant_id)
-        //  console.log();
-         
-    return {
-      id: item.id,
-      name: item.name,
-      product_id: product?.id || 'N/A',
-      productname: product?.name || 'N/A',
-      variant_id: variant?.id || 'N/A',
-      variant_name: variant?.variant_name || 'N/A',
-      variant_value: variant?.variant_value || 'N/A',
-      price: item.price
     }
-  })
+  }, [selectedVariant, discountData]);
 
-  const rel = (e) => {
-    e.preventDefault()
-    let obj = {
-      user_phone_no: no,
-      status: status,
-      discount: dis,
-      tax: tax,
-      total_amount: totalAmount,
-      payment_mode: payment,
-      cash_amount: cashAmount,
-      online_amount: onlineAmount,
-      order_date: orderDate,
-      updated_at: update,
-      items: cartItems.map(item => ({
-        product_id: item.product_id,
-        variant_id: item.variant_id,
-        quantity: quantities[item.id] || 1,
-        price: item.price
-      }))
+  const productOptions = products.map(p => ({
+    value: p.productId,
+    label: p.productName,
+  }));
+
+  const variantOptions = filteredVariants.map(v => ({
+    value: v.productVariantId,
+    label: `${v.variantName} ${v.variantValue}`,
+    variant: v,
+  }));
+
+  const handleAddToCart = () => {
+    if (!selectedProduct || !selectedVariant || currentQuantity < 1) {
+      toast.error('Select product, variant and quantity');
+      return;
     }
-    axios.post("http://localhost:3000/order", obj).then(() => {
-      // Reset form after successful order
-      setNo('')
-      setStatus('pending')
-      setDis('10%')
-      setTax('19%')
-      setTotalAmount(0)
-      setPayment('cash_amount')
-      setCashAmount('')
-      setOnlineAmount('')
-      setOrderDate('')
-      setUpdate('')
-      setData([])
-      setQuantities({})
-    })
-  }
+
+    const inv = inventory.find(i => i.productVariant.productVariantId === selectedVariant.value);
+    if (!inv || inv.quantity < currentQuantity) {
+      toast.error('Stock not available');
+      return;
+    }
+       
+    setCartItems(prev => [...prev, {
+      productVariantId: selectedVariant.value,
+      productName: selectedProduct.label,
+      variantName: selectedVariant.variant.variantName,
+      variantValue: selectedVariant.variant.variantValue,
+      unitPrice: selectedVariant.variant.price,
+      quantity: currentQuantity,
+    }]);
+
+    setSelectedProduct(null);
+    setSelectedVariant(null);
+    setCurrentQuantity(1);
+    toast.success('Item added');
+  };
+
+  const increase = idx => {
+    setCartItems(items => {
+      const arr = [...items];
+      arr[idx].quantity++;
+      return arr;
+    });
+  };
+
+  const decrease = idx => {
+    setCartItems(items => {
+      const arr = [...items];
+      if (arr[idx].quantity > 1) arr[idx].quantity--;
+      return arr;
+    });
+  };
+
+  const dlt = i => {
+    setCartItems(prev => prev.filter((_, index) => index !== i));
+  };
+
+  const calculateTotal = () => {
+    const subtotal = cartItems.reduce((sum, it) => sum + it.unitPrice * it.quantity, 0);
+    const discount = dis.includes('%') ? (parseFloat(dis) / 100) * subtotal : parseFloat(dis) || 0;
+    const taxVal = tax.includes('%') ? (parseFloat(tax) / 100) * (subtotal - discount) : parseFloat(tax) || 0;
+    return (subtotal - discount + taxVal).toFixed(2);
+  };
+
+  useEffect(() => {
+    setTotalAmount(calculateTotal());
+  }, [cartItems, dis, tax]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (no.length < 10) return toast.error('Invalid phone number');
+    if (cartItems.length === 0) return toast.error('Cart is empty');
+
+    const payload = {
+      userPhoneNumber: no,
+      status: status.toUpperCase(),
+      paymentMode: payment,
+      cashAmount,
+      onlineAmount,
+      orderDate: orderDate || new Date().toISOString(),
+      updatedAt: update || new Date().toISOString(),
+      orderItemRequests: cartItems.map(it => ({
+        variantId: it.productVariantId,
+        quantity: it.quantity,
+        unitPrice: it.unitPrice,
+      })),
+    };
+
+    axios.post(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/order/create`, payload)
+      .then(() => {
+        toast.success('Order placed!');
+        setNo('');
+        setStatus('PENDING');
+        setDis('');
+        setTax('19%');
+        setTotalAmount(0);
+        setPayment('CASH');
+        setCashAmount('');
+        setOnlineAmount('');
+        setOrderDate('');
+        setUpdate('');
+        setCartItems([]);
+        setShowSidebar(false);
+      })
+      .catch(() => toast.error('Order failed!'));
+  };
 
   return (
     <>
-    <Navbar/>
-      <div className='min-h-screen w-full bg-slate-200'>
-        <div className="absolute top-16">
-          {cartItems.map((item) => (
-            <div key={item.id} className='flex flex-col p-4 bg-white w-[500px]  shadow-md mb-4 rounded-md'>
-              <div className='flex justify-between items-center gap-2 mb-2'>
-                <span className="font-semibold">CartItem: {item.id}</span>
-                <button
-                  onClick={() => dlt(item.id)}
-                  className='bg-red-700 p-1 h-6 w-6 flex items-center justify-center text-white rounded-full hover:bg-red-800 transition'
-                  aria-label="Delete"
-                >
-                  &times;
-                </button>
-              </div>
-
-              <span><strong>Product ID:</strong> {item.product_id}</span>
-              <span><strong>Product name:</strong> {item.productname}</span>
-              <span><strong>Variant ID:</strong> {item.variant_id}</span>
-              <span><strong>Variant name:</strong> {item.variant_name}</span>
-              <span><strong>Variant value:</strong> {item.variant_value}</span>
-              <div className='flex gap-2 my-3 justify-between items-center'>
-                <div className='flex items-center gap-2 bg-green-600 rounded px-2 py-1 text-white select-none'>
-                  <button
-                    onClick={() => decrease(item.id)}
-                    className='hover:bg-green-400 rounded px-2 py-1 transition'
-                  >
-                    -
-                  </button>
-                  <span className='font-semibold'>{quantities[item.id] || 1}</span>
-                  <button
-                    onClick={() => increase(item.id)}
-                    className='hover:bg-green-400 rounded px-2 py-1 transition'
-                  >
-                    +
-                  </button>
-                </div>
-                <span className="ml-auto font-semibold">
-                  ₹{((item.price) * (quantities[item.id] || 1)).toFixed(2)}
-                </span>
-              </div>
-            </div>
-          ))}
+      <div className="min-h-screen bg-slate-100 p-6 pr-[420px]">
+        <div className="bg-white p-4 rounded shadow mb-4">
+          <Select
+            options={productOptions}
+            value={selectedProduct}
+            onChange={setSelectedProduct}
+            placeholder="Select Product"
+          />
+          <Select
+            options={variantOptions}
+            value={selectedVariant}
+            onChange={option => setSelectedVariant(option)}
+            placeholder="Select Variant"
+            isDisabled={!selectedProduct}
+          />
+          <input
+            type="number"
+            value={currentQuantity}
+            min={1}
+            onChange={e => setCurrentQuantity(+e.target.value)}
+            className="border p-2 rounded w-full mb-2"
+            placeholder="Quantity"
+          />
+          <button onClick={handleAddToCart} className="bg-green-600 text-white p-2 rounded w-full">
+            Add to Cart
+          </button>
         </div>
 
-        <div className='flex justify-end '>
-          <form onSubmit={rel} className='bg-white rounded-xl w-80 justify-center flex flex-col fixed top-16 gap-4 p-6 shadow-lg border border-gray-300'>
-            <input
-              value={no}
-              onChange={(e) => setNo(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              type="number"
-              placeholder='Phone no.'
-              required
-            />
-
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              required
-            >
-              <option value="cancelled">Cancelled</option>
-              <option value="pending">Pending</option>
-              <option value="complete">Complete</option>
-            </select>
-
-            <input
-              value={dis}
-              onChange={(e) => setDis(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              type="text"
-              placeholder='Discount (e.g. 10%)'
-            />
-
-            <input
-              value={tax}
-              onChange={(e) => setTax(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              type="text"
-              placeholder='Tax (e.g. 19%)'
-            />
-
-            <input
-              value={totalAmount}
-              readOnly
-              className='border border-gray-300 rounded-md p-2 bg-gray-100 cursor-not-allowed'
-              type="text"
-              placeholder='Total amount'
-            />
-
-            <select
-              value={payment}
-              onChange={(e) => setPayment(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              required
-            >
-              <option value="both">Both</option>
-              <option value="online_upi">Online UPI</option>
-              <option value="cash_amount">Cash amount</option>
-            </select>
-
-            {payment === 'both' && (
-              <>
-                <input
-                  type="number"
-                  placeholder="Cash amount"
-                  value={cashAmount}
-                  onChange={(e) => setCashAmount(e.target.value)}
-                  className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 mt-2'
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="Online amount"
-                  value={onlineAmount}
-                  onChange={(e) => setOnlineAmount(e.target.value)}
-                  className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 mt-2'
-                  required
-                />
-              </>
-            )}
-
-            {payment === 'cash_amount' && (
-              <input
-                type="number"
-                placeholder="Cash amount"
-                value={cashAmount}
-                onChange={(e) => setCashAmount(e.target.value)}
-                className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 mt-2'
-                required
-              />
-            )}
-
-            {payment === 'online_upi' && (
-              <input
-                type="number"
-                placeholder="Online amount"
-                value={onlineAmount}
-                onChange={(e) => setOnlineAmount(e.target.value)}
-                className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 mt-2'
-                required
-              />
-            )}
-
-            <input
-              value={orderDate}
-              onChange={(e) => setOrderDate(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              type="date"
-              required
-            />
-
-            <input
-              value={update}
-              onChange={(e) => setUpdate(e.target.value)}
-              className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500'
-              type="date"
-            />
-
-            <button
-              type="submit"
-              className='bg-green-600 hover:bg-green-800 text-white font-semibold py-2 rounded-md shadow-md transition duration-300'
-            >
-              Buy
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Cart</h2>
+          {cartItems.length === 0 ? (
+            <p className="text-gray-500">Cart is empty</p>
+          ) : (
+            cartItems.map((item, i) => (
+              <div key={i} className="bg-white p-3 rounded mb-2 shadow flex justify-between items-center">
+                <div>
+                  <p><strong>{item.productName}</strong> - {item.variantName} ({item.variantValue})</p>
+                  <p>₹{item.unitPrice} x {item.quantity} = ₹{(item.unitPrice * item.quantity).toFixed(2)}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <button onClick={() => decrease(i)} className="bg-green-600 rounded px-2 py-1 text-white">-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => increase(i)} className="bg-green-600 rounded px-2 py-1 text-white">+</button>
+                  </div>
+                </div>
+                <button onClick={() => dlt(i)} className="text-gray-400" title="Delete item">🗑</button>
+              </div>
+            ))
+          )}
+          <div className="flex justify-between mt-2">
+            <p className="font-bold">Total: ₹{totalAmount}</p>
+            <button onClick={() => setShowSidebar(true)} className="bg-purple-600 text-white p-2 rounded">
+              Place to Order
             </button>
-          </form>
+          </div>
         </div>
       </div>
-    </>
-  )
-}
 
-export default ADDCART
+      {showSidebar && (
+        <div className="fixed top-0 right-0 w-96 h-screen overflow-y-auto bg-white shadow-xl border-l p-6 z-50">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input value={no} onChange={e => setNo(e.target.value)} placeholder="Phone no." className="border p-2 rounded" required />
+            <select value={status} onChange={e => setStatus(e.target.value)} className="border p-2 rounded" required>
+              <option value="PENDING">Pending</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+            <input value={dis} onChange={e => setDis(e.target.value)} placeholder="Discount" className="border p-2 rounded" />
+            <input value={tax} onChange={e => setTax(e.target.value)} placeholder="Tax" className="border p-2 rounded" />
+            <input value={totalAmount} readOnly className="border p-2 rounded bg-gray-100" placeholder="Total Amount" />
+            <select value={payment} onChange={e => setPayment(e.target.value)} className="border p-2 rounded" required>
+              <option value="both">Both</option>
+              <option value="online_upi">Online UPI</option>
+              <option value="CASH">Cash</option>
+            </select>
+            {payment === 'both' && (
+              <>
+                <input type="number" value={cashAmount} onChange={e => setCashAmount(e.target.value)} placeholder="Cash amount" className="border p-2 rounded" required />
+                <input type="number" value={onlineAmount} onChange={e => setOnlineAmount(e.target.value)} placeholder="Online amount" className="border p-2 rounded" required />
+              </>
+            )}
+            {payment === 'CASH' && (
+              <input type="number" value={cashAmount} onChange={e => setCashAmount(e.target.value)} placeholder="Cash amount" className="border p-2 rounded" required />
+            )}
+            {payment === 'online_upi' && (
+              <input type="number" value={onlineAmount} onChange={e => setOnlineAmount(e.target.value)} placeholder="Online amount" className="border p-2 rounded" required />
+            )}
+            <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} className="border p-2 rounded" required />
+            <input type="date" value={update} onChange={e => setUpdate(e.target.value)} className="border p-2 rounded" />
+            <button type="submit" className="bg-green-600 text-white py-2 rounded">Buy</button>
+          </form>
+        </div>
+      )}
+
+      <ToastContainer position="top-center" autoClose={1500} />
+    </>
+  );
+};
+
+export default ADDCART;

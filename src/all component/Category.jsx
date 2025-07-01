@@ -1,35 +1,43 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
-
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 let Category = () => {
   let [data, setData] = useState([]);
-  let [id, setId] = useState("");
+  let [categoryId, setId] = useState("");
   let [name, setName] = useState("");
   let [description, setDescription] = useState("");
-  let [parent_id, setParentId] = useState("");
+  let [parentId, setParentId] = useState("");
   let [updateID, setUpdateID] = useState(null);
   let [updateActive, setUpdateActive] = useState(false);
 
   let getData = () => {
-    axios.get("http://localhost:3000/Category").then((res) => {
-      setData(res.data);
-    });
+    axios
+      .get(
+        `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/getAll`,
+        {
+          headers: { "ngrok-skip-browser-warning": "true" },
+        }
+      )
+      .then((res) => {
+        setData(res.data);
+        console.log(res.data);
+      });
   };
 
   useEffect(() => {
     getData();
   }, []);
 
-  // const getParentCategoryName = (id) => {
-  //   const parent = data.find((cat) => cat.id === parseInt(id));
-  //   return parent ? parent.name : "None";
-  // };
-
   let del = (id) => {
-    axios.delete(`http://localhost:3000/Category/${id}`).then(() => {
-      getData();
-    });
+    axios
+      .delete(
+        `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/delete/${id}`
+      )
+      .then(() => {
+        getData();
+      });
   };
 
   let resetForm = () => {
@@ -45,60 +53,75 @@ let Category = () => {
     e.preventDefault();
 
     const obj = {
-      id: parseInt(id),
+      categoryId: parseInt(categoryId),
       name,
       description,
-      parent_id: parent_id ? parseInt(parent_id) : null,
+      parentId: parentId ? parseInt(parentId) : null,
     };
 
     if (updateActive) {
-      axios.put(`http://localhost:3000/Category/${updateID}`, obj).then(() => {
-        getData();
-        resetForm();
-      });
+      axios
+        .put(
+          `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/update/${updateID}`,
+          obj
+        )
+        .then(() => {
+          getData();
+          resetForm();
+        });
     } else {
-      axios.post("http://localhost:3000/Category", obj).then(() => {
-        getData();
-        resetForm();
-      });
+      axios
+        .post(
+          "https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/create",
+          obj
+        )
+        .then(() => {
+          getData();
+          resetForm();
+        });
     }
   };
 
   const edt = (v) => {
-    setId(v.id);
+    setId(v.categoryId);
     setName(v.name);
     setDescription(v.description);
-    setParentId(v.parent_id);
-    setUpdateID(v.id);
+    setParentId(v.parentId);
+    setUpdateID(v.categoryId);
     setUpdateActive(true);
   };
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen w-full bg-cyan-700 p-4">
+      <div className="min-h-screen w-full bg-gray-100  p-4">
         <div className="flex flex-wrap absolute top-20 gap-4">
           {data.map((v) => (
             <div
-              key={v.id}
-              className="h-[250px] w-[200px] flex flex-col justify-center gap-1 bg-cyan-900 text-white shadow-lg p-4 rounded"
+              key={v.categoryId}
+              className="h-[250px] w-[200px] flex flex-col justify-center gap-1 bg-white text-black shadow-lg p-4 rounded"
             >
-              <span>ID: {v.id}</span>
+              {/* <span>ID: {v.categoryId}</span> */}
               <span>Name: {v.name}</span>
               <span>Description: {v.description}</span>
-              {/* <span>Parent: {getParentCategoryName(v.parent_id)}</span> */}
-              <div className="mt-2 flex justify-between">
+              <span>
+                Parent:{" "}
+                {v.parentId 
+                  ? v.parentId.name
+                  : "none"}
+              </span>
+              <div className="mt-2 flex text-cyan-100 justify-center gap-4  ">
                 <button
                   onClick={() => edt(v)}
-                  className="bg-pink-950 px-5 py-1 rounded"
+                  className="bg-green-600 px-5 py-1 rounded"
                 >
-                  Edit
+                    <CiEdit />
                 </button>
                 <button
-                  onClick={() => del(v.id)}
-                  className="bg-pink-700 px-3 py-1 rounded"
+                  onClick={() => del(v.categoryId)}
+                  className="bg-red-700 px-3 py-1 rounded"
                 >
-                  Delete
+                  <MdDelete />
                 </button>
               </div>
             </div>
@@ -107,35 +130,43 @@ let Category = () => {
 
         <form
           onSubmit={sub}
-          className="mt-6 fixed top-[45%] bg-gray-950 p-4 rounded w-[250px] flex flex-col gap-2 text-white"
+          className="mt-6 fixed top-[45%] bg-gray-400 p-4 rounded w-[250px] flex flex-col gap-2 text-white"
         >
-          <input
+          {/* <input
             type="number"
-            value={id}
+            value={categoryId}
             onChange={(e) => setId(e.target.value)}
             placeholder="ID"
-            className="bg-cyan-900 py-1 px-2 w-full"
-          />
+            className="bg-gray-700 py-1 px-2 w-full"
+          /> */}
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="bg-gray-800 py-1 px-2 w-full"
+            className="bg-gray-700 py-1 px-2 w-full"
           />
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description"
-            className="bg-cyan-900 py-1 px-2 w-full"
+            className="bg-gray-700 py-1 px-2 w-full"
           />
-          <input
-            type="number"
-            value={parent_id}
+
+          <select
+            value={parentId || ""}
             onChange={(e) => setParentId(e.target.value)}
-            placeholder="Parent ID (optional)"
-            className="bg-gray-800 py-1 px-2 w-full"
-          />
+            className=" bg-gray-600"
+            
+          >
+            <option value="">Select parent</option>
+            {data.map((cat) => (
+              <option key={cat.categoryId} value={cat.categoryId}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+
           <button
             type="submit"
             className="bg-blue-700 py-1 rounded font-bold hover:bg-blue-900"

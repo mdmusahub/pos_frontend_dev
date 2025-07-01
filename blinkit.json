@@ -7,12 +7,6 @@
       "parent_id": 0
     },
     {
-      "id": "3",
-      "name": "Mobile Phones",
-      "description": "Smartphones and accessories",
-      "parent_id": 1
-    },
-    {
       "id": "4",
       "name": "furniture",
       "description": "okswood",
@@ -30,11 +24,6 @@
       "description": "tfygjuhkjl",
       "parent_id": null
     },
-
-
-    
-
-
     {
       "id": "10",
       "name": "jewallery",
@@ -217,54 +206,16 @@
   ],
   "cart": [],
   "Inventory": [
+
     {
-      "product_id": 1,
-      "product_variant_id": 1,
-      "quantity": "5",
-      "location": "Pune",
-      "lastUp": 1747994521210,
-      "id": "1"
-    },
-    {
-      "product_id": 2,
-      "product_variant_id": 2,
-      "quantity": "60",
-      "location": "Indore",
-      "lastUp": 1748246384730,
-      "id": "2"
-    },
-    {
-      "product_id": 3,
-      "product_variant_id": 3,
-      "quantity": "45",
-      "location": "delhi",
-      "lastUp": 1747996393486,
-      "id": "3"
-    },
-    {
-      "product_id": 4,
-      "product_variant_id": 4,
-      "quantity": "21",
-      "location": "fff",
-      "lastUp": 1747996404507,
-      "id": "4"
-    },
-    {
-      "product_id": "5",
-      "product_variant_id": "5",
-      "quantity": "23g",
-      "location": "uttarakhand",
-      "lastUp": 1748016147628,
-      "id": "5"
-    },
-    {
-      "product_id": "6",
-      "product_variant_id": "6",
-      "quantity": "123kg",
-      "location": "bhopal",
-      "lastUp": 1748016173615,
-      "id": "6"
+     
+  "quantity": 0,
+  "location": "string",
+  "lastUpdated": "2025-06-17T06:25:27.615Z",
+  "variantId":0
+
     }
+   
   ],
   "product_variant": [
     {
@@ -566,68 +517,12 @@
   ],
   "order_item": [
     {
-      "id": "7eb2",
-      "variant_name": "xxl",
-      "variant_value": "narangi",
-      "price": "645",
-      "product_id": "2"
-    },
-    {
-      "id": "9701",
-      "variant_name": "iphone17pro",
-      "variant_value": "ligthblue",
-      "price": "120000",
-      "product_id": "581c"
-    },
-    {
-      "id": "9701",
-      "variant_name": "iphone17pro",
-      "variant_value": "ligthblue",
-      "price": "120000",
-      "product_id": "581c"
-    },
-    {
-      "id": "4f3f",
-      "variant_name": "yellow",
-      "variant_value": "sm",
-      "price": "650",
-      "product_id": "2"
-    },
-    {
       "id": "4393",
       "variant_name": "iphone16",
       "variant_value": "blue",
       "price": "100000",
       "product_id": "581c"
     }
-    
-  ],
-   "carousel":[
-     {
-    "id":1,
-    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img22/Unrec/TallHero_3000X1200_Unrec._CB593464763_.jpg",
-    "name":"Watch"
-   },{
-     "id":2,
-     "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img22/Wireless/devjyoti/GW/Uber/Nov/uber_new_high._CB537689643_.jpg",
-     "name":"smartphone"
-   },
-   {
-    "id":3,
-    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30001._CB542120021_.jpg",
-    "name":"men'shoes"
-   },
-    {
-    "id":4,
-    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/img23/Softlines_JWL_SH_GW_Assets/2024/BAU_BTF/Nov/Unrec/Shoes/1/30003._CB542120021_.jpg",
-    "name":"Water botle"
-   },
-     {
-    "id":5,
-    "image":"https://images-eu.ssl-images-amazon.com/images/G/31/sthaneka/SVM/ncq/2X_buasdhuif._CB795788272_.jpg",
-    "name":"Water botle"
-   }
-   
-]
- 
+  ]
+  
 }
