@@ -24,13 +24,13 @@ let Inventory = () => {
   }, []);
 
   const getInventoryData = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll", {
+    axios.get("https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/ProductInventory/getAll", {
       headers: { 'ngrok-skip-browser-warning': 'true' }
     }).then((res) => setInventory(res.data));
   };
 
   const getVariantData = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll", {
+    axios.get("https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/getAll", {
       headers: { 'ngrok-skip-browser-warning': 'true' }
     }).then((res) => setVariant(res.data));
   };
@@ -40,13 +40,13 @@ let Inventory = () => {
     const payload = { ...form, variantId };
 
     if (isEditing) {
-      axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/update/${form.inventoryId}`, payload)
+      axios.put(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/ProductInventory/update/${form.inventoryId}`, payload)
         .then(() => {
           getInventoryData();
           resetForm();
         });
     } else {
-      axios.post("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/create", payload)
+      axios.post("https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/ProductInventory/create", payload)
         .then(() => {
           getInventoryData();
           resetForm();
@@ -67,7 +67,7 @@ let Inventory = () => {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/delete/${id}`)
+    axios.delete(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/ProductInventory/delete/${id}`)
       .then(() => getInventoryData());
   };
 
@@ -93,7 +93,12 @@ let Inventory = () => {
 
   return (
       // <Navbar/>
-    <div  className="min-h-screen w-full flex flex-wrap gap-6 p-6 absolute top-14  bg-gray-100">
+      <>
+              <Navbar ismenu={ismenu} setismenu={setismenu}  /> 
+
+    <div onClick={()=>setismenu(false)}  className="min-h-screen w-full flex flex-wrap gap-6 p-6 absolute top-14  bg-gray-100">
+
+
 
       {/* Search input */}
       <div className="w-full flex gap-3 mb-4 items-center">
@@ -111,11 +116,10 @@ let Inventory = () => {
           Reset
         </button>
       </div>
-              <Navbar ismenu={ismenu} setismenu={setismenu}  /> 
 
       {/* Inventory cards */}
       {filteredInventory.map((v) => (
-        <div onClick={()=>setismenu(false)} key={v.inventoryId}  className="bg-white h-[300px] w-64 border rounded-2xl shadow-lg p-4 flex flex-col justify-between hover:shadow-xl transition-shadow">
+        <div  key={v.inventoryId}  className="bg-white h-[300px] w-64 border rounded-2xl shadow-lg p-4 flex flex-col justify-between hover:shadow-xl transition-shadow">
           <div className="space-y-1">
             {/* <h1 className="font-semibold">Product Variant ID: <span className="font-normal">{v.productVariant.productVariantId || "N/A"}</span></h1> */}
             <h1 className="font-semibold">Name: <span className="font-normal">{v.productVariant.variantName}</span></h1>
@@ -181,6 +185,7 @@ let Inventory = () => {
         )}
       </form>
     </div>
+    </>
   );
 };
 

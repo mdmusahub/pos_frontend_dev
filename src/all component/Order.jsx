@@ -17,7 +17,7 @@ const Order = () => {
   };
 
   const getdata = () => {
-    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/order/getAll`, {
+    axios.get(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/order/getAll`, {
       headers: { 'ngrok-skip-browser-warning': 'true' },
     }).then((res) => setOrder(res.data));
   };
@@ -35,12 +35,16 @@ const Order = () => {
 
     return matchStatus && matchDate;
   });
+   const [ismenu, setismenu] = useState(false);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <Navbar />
+    <div  className='min-h-screen w-full'>
+       <Navbar ismenu={ismenu} setismenu={setismenu}  /> 
+
+    <div  onClick={()=>{setismenu(false)}} className="p-6 bg-gray-50 w-full absolute top-[10%] min-h-screen">
+
       <Link to="/">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">🧾 Order Summary</h1>
+        <h1 className="text-3xl font-bold mb-8  text-gray-800">🧾 Order Summary</h1>
       </Link>
 
       <div className="flex justify-end gap-4 mb-6">
@@ -101,6 +105,7 @@ const Order = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

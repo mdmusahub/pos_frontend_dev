@@ -12,10 +12,11 @@ let Category = () => {
   let [updateID, setUpdateID] = useState(null);
   let [updateActive, setUpdateActive] = useState(false);
 
+  let Baseurl = "https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app"
   let getData = () => {
     axios
       .get(
-        `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/getAll`,
+        `${Baseurl}/category/getAll`,
         {
           headers: { "ngrok-skip-browser-warning": "true" },
         }
@@ -33,7 +34,7 @@ let Category = () => {
   let del = (id) => {
     axios
       .delete(
-        `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/delete/${id}`
+        `${Baseurl}/category/delete/${id}`
       )
       .then(() => {
         getData();
@@ -62,7 +63,7 @@ let Category = () => {
     if (updateActive) {
       axios
         .put(
-          `https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/update/${updateID}`,
+          `${Baseurl}/category/update/${updateID}`,
           obj
         )
         .then(() => {
@@ -72,7 +73,7 @@ let Category = () => {
     } else {
       axios
         .post(
-          "https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/create",
+          `${Baseurl}/category/create`,
           obj
         )
         .then(() => {
@@ -90,11 +91,13 @@ let Category = () => {
     setUpdateID(v.categoryId);
     setUpdateActive(true);
   };
+   const [ismenu, setismenu] = useState(false);
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen w-full bg-gray-100  p-4">
+
+     <Navbar ismenu={ismenu} setismenu={setismenu} /> 
+      <div onClick={()=>{setismenu(false)}}  className="min-h-screen w-full bg-gray-100  p-4">
         <div className="flex flex-wrap absolute top-20 gap-4">
           {data.map((v) => (
             <div

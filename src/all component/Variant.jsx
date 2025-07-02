@@ -10,7 +10,7 @@ const Variant = () => {
   const [variantValue, setVariantValue] = useState('');
   const [price, setPrice] = useState('');
   const [productId, setProductId] = useState('');
-  const [editId, setEditId] = useState(null); // For editing
+  const [editId, setEditId] = useState(null); 
 
   useEffect(() => {
     fetchVariants();
@@ -18,7 +18,7 @@ const Variant = () => {
   }, []);
 
   const fetchVariants = () => {
-    axios.get('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll', {
+    axios.get('https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/getAll', {
       headers: { 'ngrok-skip-browser-warning': 'true' }
     }).then((res) => {
       setVariants(res.data);
@@ -27,7 +27,7 @@ const Variant = () => {
   };
 
   const fetchProducts = () => {
-    axios.get('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll', {
+    axios.get('https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/product/getAll', {
       headers: { 'ngrok-skip-browser-warning': 'true' },
     }).then((res) => {
       setProducts(res.data);
@@ -45,13 +45,13 @@ const Variant = () => {
 
     if (editId) {
       axios
-        .put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/update/${editId}`, variantData)
+        .put(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/update/${editId}`, variantData)
         .then(() => {
           fetchVariants();
           resetForm();
         });
     } else {
-      axios.post('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/create', variantData).then(() => {
+      axios.post('https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/create', variantData).then(() => {
         fetchVariants();
         resetForm();
       });
@@ -68,7 +68,7 @@ const Variant = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this variant?')) {
-      axios.delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/delete/${id}`).then(() => {
+      axios.delete(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/delete/${id}`).then(() => {
         fetchVariants();
       });
     }
@@ -180,4 +180,4 @@ const Variant = () => {
     );
 };
 
-    export default Variant;
+    export default Variant;

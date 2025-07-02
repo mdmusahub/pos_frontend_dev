@@ -10,7 +10,7 @@ const Singleproduct = () => {
     console.log(singleId)
 
     const getpr=()=>{
-        axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getById/${singleId.id}`,{
+        axios.get(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/product/getById/${singleId.id}`,{
       headers:{'ngrok-skip-browser-warning':'true'},
     }).then((res) => {
       Setprdata(res.data)
@@ -18,7 +18,7 @@ const Singleproduct = () => {
     });
     }; 
      const getIn=()=>{
-        axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll`,{
+        axios.get(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/ProductInventory/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'}
     }).then((res)=>{
       Setindata(res.data)

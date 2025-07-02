@@ -23,13 +23,13 @@ const Main = () => {
 
  const dataa=useContext(AppContext) 
  
- const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId]=dataa
+ const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId,BaseUrl]=dataa
  
 const navigate=useNavigate()
 
 
   const getData = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll",{
+    axios.get(`${BaseUrl}/product/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'},
     }).then((res) => {
       setData(res.data)
@@ -38,18 +38,18 @@ const navigate=useNavigate()
   };
   
   const getcategorydata = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/getAll",{
+    axios.get(`${BaseUrl}/category/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'},
     }).then((res) => {setcategorydata(res.data)});
   };
 
   const getvariantdata = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll",{
+    axios.get(`${BaseUrl}/productVariant/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'}}).then((res) => setvariantdata(res.data));
   };
 
   const getinventorydata=()=>{
-      axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll",{
+      axios.get(`${BaseUrl}/ProductInventory/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'}
 }).then((res) => {
   setInventorydata(res.data);
@@ -66,7 +66,7 @@ const navigate=useNavigate()
 
   const del = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      axios.delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/delete/${id}`).then(() => getData());
+      axios.delete(`${BaseUrl}/product/delete/${id}`).then(() => getData());
     }
   };
 
@@ -94,12 +94,12 @@ const navigate=useNavigate()
     };
 
     if (updateActive) {
-      axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/update/${updateID}`, obj).then(() => {
+      axios.put(`${BaseUrl}/product/update/${updateID}`, obj).then(() => {
         getData();
         resetForm();
       });
     } else {
-      axios.post("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/create", obj).then(() => {
+      axios.post(`${BaseUrl}/product/create`, obj).then(() => {
         getData();
         resetForm();
       });
@@ -183,7 +183,7 @@ navigate('/Additems')
   let add = (v)=>{
     console.log(v);
     
-    axios.post(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/order/create,v`).then((res)=>{
+    axios.post(`${BaseUrl}/order/create,v`).then((res)=>{
       console.log(res.data)
       setcardpro(res.data)
     })
@@ -195,37 +195,9 @@ navigate('/Additems')
       <Navbar searchQuery={searchvalue} setismenu={setismenu} ismenu={ismenu} setSearchQuery={setsearchvalue} sortdata={setsort} />
      
         
-     
+    
 
-
-
-      {variantModalOpen && selectedProductForVariant && (
-        <div className="fixed inset-10 backdrop-blur-sm bg-white/10 z-50 flex items-center justify-center">
-          <div className="bg-white w-[90vw] max-w-md p-4 rounded-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-3">Variants for {selectedProductForVariant.productName}</h2>
-            <div className="max-h-48 overflow-y-auto space-y-2">
-              {variantdata
-                .filter(variant => String(variant.productId) === String(selectedProductForVariant.productvariantId))
-                .map((variant) => (
-                  <div key={variant.productVariantId} className="bg-gray-100 p-2 rounded shadow-sm text-sm">
-                    <p><strong>{variant.variantName}</strong> <button></button> : {variant.variantValue}</p> 
-                   <div className='flex justify-between'>
-                    <p>Price: ₹{variant.price}</p> 
-                   <button className='bg-green-700 pl-7 pr-7 py-2 text-white' onClick={()=>add(variant)}>Add
-
-                   </button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-            <button onClick={() => setVariantModalOpen(false)} className="mt-4 bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 text-sm">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div onMouseEnter={()=>{setismenu(false)}} className="flex absolute top-[10%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
+      <div onClick={()=>{setismenu(false)}} className="flex absolute top-[10%] flex-wrap gap-7 min-h-screen w-full bg-slate-200 p-4">
         {sortproduct.map((v,i) => (
           <div key={v.productId} className="w-[300px] h-72 bg-white text-black p-4 rounded-lg shadow-md font-serif relative">
             <NavLink to={`/pr/${v.productId}`}>
@@ -253,4 +225,4 @@ navigate('/Additems')
   );
 };
 
-export default Main;
+export default Main;

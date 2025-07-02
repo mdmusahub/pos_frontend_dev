@@ -20,7 +20,7 @@ const Additems = () => {
 
 const data=useContext(AppContext) 
 
-const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId]=data
+ const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId,BaseUrl]=data
 
 console.log(productvariants,'muneeb')
 
@@ -51,9 +51,8 @@ console.log(productvariants,'this is productvariants')
 
 
 
-
   const getproductData = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll",{
+    axios.get(`${BaseUrl}/product/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'},
     }).then((res) => {
       setproductdata(res.data)
@@ -62,7 +61,7 @@ console.log(productvariants,'this is productvariants')
   };
   
   const getcategorydata = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/category/getAll",{
+    axios.get(`${BaseUrl}/category/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'},
     }).then((res) => {
       setcategorydata(res.data)
@@ -71,7 +70,7 @@ console.log(productvariants,'this is productvariants')
   };
 
   const getvariantdata = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll",{
+    axios.get(`${BaseUrl}/productVariant/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'}}).then((res) =>{ 
         setvariantdata(res.data)
         console.log(res.data,'variantdata')
@@ -79,7 +78,7 @@ console.log(productvariants,'this is productvariants')
   };
 
     let getInventoryData = () => {
-    axios.get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll",{
+    axios.get(`${BaseUrl}/ProductInventory/getAll`,{
       headers:{'ngrok-skip-browser-warning':'true'}
 }).then((res) => {
   setInventorydata(res.data);
@@ -123,7 +122,7 @@ console.log(obj);
 
 if(obj.variantRequests.length!==0 && productName!=="" && sku!=="" && categoryId!=="" && description!==""){
 
-  axios.post("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/create", obj).then(() => {
+  axios.post(`${BaseUrl}/product/create`, obj).then(() => {
  
  setName("") 
  setSku("")
@@ -237,7 +236,7 @@ let obj={
 console.log(obj,'assssssssssssssssssssssssssssssss')
 
 if(productName!=="" && sku!=="" && categoryId!=="" && description!==""){
-  axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/updateAllDetails/${productId}`, obj).then(() => {
+  axios.put(`${BaseUrl}/product/updateAllDetails/${productId}`, obj).then(() => {
 
  setName("")
  setSku("")
@@ -259,49 +258,14 @@ window.alert("Product updated successfully")
 }
 else if(productName==""){
 
- setName("") 
- setSku("")
- setDescription("")
- setCategoryId(null)
- setvariantsarray([])
- setCategoryId("")
- setinventoryquantity("")
- setinventorylocation("")
- setupdatevariantName("")
- setupdatevariantValue("")
- setupdatevariantprice("")
-
 window.alert("please enter Product name") 
 }
 else if(sku==""){
-
- setName("") 
- setSku("")
- setDescription("")
- setCategoryId(null)
- setvariantsarray([])
- setCategoryId("")
- setinventoryquantity("")
- setinventorylocation("")
- setupdatevariantName("")
- setupdatevariantValue("")
- setupdatevariantprice("")
 
 window.alert("please enter sku id") 
 }
 else if(description==""){
 
- setName("") 
- setSku("")
- setDescription("")
- setCategoryId(null)
- setvariantsarray([])
- setCategoryId("")
- setinventoryquantity("")
- setinventorylocation("")
- setupdatevariantName("")
- setupdatevariantValue("")
- setupdatevariantprice("")
 
 window.alert("please enter description") 
 }

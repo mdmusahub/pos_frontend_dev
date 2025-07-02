@@ -18,8 +18,10 @@ const Discount = () => {
     const [updateId, setupdateId] = useState(null)
     const [variants, setVariants] = useState([])
 
+
+    
     let getdata = () => {
-        axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/getAll`, {
+        axios.get(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/discount/getAll`, {
             headers: { 'ngrok-skip-browser-warning': 'true' },
         }).then((res) => {
             console.log(res.data)
@@ -31,7 +33,7 @@ const Discount = () => {
 
     
   const fetchVariants = () => {
-    axios.get('https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll', {
+    axios.get('https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/productVariant/getAll', {
       headers: { 'ngrok-skip-browser-warning': 'true' }
     }).then((res) => {
       setVariants(res.data);
@@ -71,12 +73,12 @@ const Discount = () => {
         console.log(enddate)
 
         if (update) {
-            axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/update/${updateId}`, obj).then(() => {
+            axios.put(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/discount/update/${updateId}`, obj).then(() => {
                 getdata()
                 reset()
             })
         } else {
-            axios.post(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/create`, obj).then(() => {
+            axios.post(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/discount/create`, obj).then(() => {
                 getdata()
                 reset()
             })
@@ -84,7 +86,7 @@ const Discount = () => {
 
     }
     let dlt = (id) => {
-        axios.delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/delete/${id}`).then(() => {
+        axios.delete(`https://9341-2405-201-3037-e814-34ec-3713-6be8-8c8a.ngrok-free.app/discount/delete/${id}`).then(() => {
             getdata()
             reset()
         })

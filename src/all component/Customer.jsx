@@ -1,17 +1,25 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import Navbar from "./Navbar";
+import { AppContext } from "./Contextapi";
 let Customer = () => {
   const [customerdata, setcustomer] = useState([]);
   const [phoneNumber, setphoneNumber] = useState("");
   const [customerid, setcustomerid] = useState(null);
   const [isedit, setisedit] = useState(false);
 
+
+ const dataa=useContext(AppContext) 
+ 
+ const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId,BaseUrl]=dataa
+ 
+
+
   const getcustomerdata = () => {
     axios
-      .get("https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/customer/getAll", {
+      .get(`${BaseUrl}/customer/getAll`, {
         headers: { "ngrok-skip-browser-warning": "true" },
       })
       .then((res) => {
@@ -26,7 +34,7 @@ let Customer = () => {
 
   const del = (id) => {
     axios
-      .delete(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/customer/delete/${id}`)
+      .delete(`${BaseUrl}/customer/delete/${id}`)
       .then(() => {
         getcustomerdata();
       })
@@ -49,7 +57,7 @@ let Customer = () => {
     };
 
     if (isedit) {
-      axios.put(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/customer/update/${customerid}`, obj)
+      axios.put(`${BaseUrl}/customer/update/${customerid}`, obj)
         .then(() => {
           getcustomerdata();
           resetForm();
@@ -69,7 +77,7 @@ let Customer = () => {
     <>
       <Navbar ismenu={ismenu} setismenu={setismenu} />
 
-      <div onClick={() => { setismenu(false) }} className="min-h-screen absolute top-20 bg-gray-100 flex  flex-wrap gap-3 p-4">
+      <div onClick={() => { setismenu(false) }} className="min-h-screen absolute top-20 bg-gray-100 flex  w-full flex-wrap gap-3 p-4">
         {customerdata.map((v) => (
           <div
             key={v.customerId}

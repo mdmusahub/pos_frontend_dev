@@ -25,7 +25,7 @@ let menu =()=>{
 // setismenu(false)
   return (
     <>
-      <nav className="fixed top-0 z-50 h-[60px]  flex items-center bg-white justify-between px-10 w-full shadow-md" onMouseEnter={()=>{setismenu(false)}}>
+      <nav className="fixed top-0 z-50 h-[60px]  flex items-center bg-white justify-between px-10 w-full shadow-md">
         <div className="flex items-center gap-10">
           <Link to="/" className="font-extrabold text-3xl flex items-center gap-1">
             <span className="text-green-800">Blinkit</span>
@@ -58,7 +58,7 @@ let menu =()=>{
         </div>
       <Link className="h-[100%]" to={'/login'}>
   <div className=' h-[100%] absolute left-[1250px] flex items-center text-2xl px-3'>
-    {user!==`"undefined"` && user!==null ?
+    {user!=="undefined" && user!==null ?
     <h6 className="w-[30px] h-[30px] border-2 rounded-[100%] text-center text-lg bg-yellow-400 text-white">{user[1].toUpperCase()}</h6> :
     <FaRegUser />}
   </div>
@@ -75,40 +75,41 @@ let menu =()=>{
       <div></div>
         <div className=" absolute left-[1470px] ">
           <div >
-            <TfiMenuAlt className="font-bold text-2xl" onMouseEnter={()=>menu()} />
+            <TfiMenuAlt className="font-bold text-2xl" onClick={()=>menu()} />
    {ismenu==true ?
-   <div className="absolute top-2.5 w-34 font-bold right-1" onMouseLeave={()=>{setismenu(false)}}> 
+   <div className="absolute top-2.5 w-34 font-bold right-1"> 
     <Link to={"/inventory"}>
-<div className="bg-neutral-600  hover:bg-red-600 border-y border-b-black text-white py-2 px-2">
+<div className="bg-neutral-600  hover:bg-blue-600 border-y border-b-black text-white py-2 px-2">
   Inventory
 </div>
 </Link>
 
 <Link to={'/variant'}>
-<div className="bg-neutral-600 py-2 px-2 text-white  hover:bg-red-600 border-y border-b-black">
+<div className="bg-neutral-600 py-2 px-2 text-white  hover:bg-blue-600 border-y border-b-black">
   <button>Variant</button>
 </div>
 </Link>
 
 <Link to={'/customer'}>
-<div className="bg-neutral-600 py-2 px-2  hover:bg-red-600 border-y border-b-black text-white">
+<div className="bg-neutral-600 py-2 px-2  hover:bg-blue-600 border-y border-b-black text-white">
   <button>customer</button>
 </div>
 </Link>
 
 <Link to={'/discount'}>
-<div className="bg-neutral-600 py-2 px-2  hover:bg-red-600 border-y border-b-black text-white">
+<div className="bg-neutral-600 py-2 px-2  hover:bg-blue-600 border-y border-b-black text-white">
   <button>discount</button>
 </div>
 </Link>
 
 <Link to={'/category'}>
-<div className="bg-neutral-600 py-2 px-2  hover:bg-red-600 border-y border-b-black text-white">
+<div className="bg-neutral-600 py-2 px-2  hover:bg-blue-600 border-y border-b-black text-white">
   <button>Category</button>
 </div>
 </Link>
-<Link to={`/order/`}>
-<div className="bg-neutral-600 py-2 px-2  hover:bg-red-600 border-y border-b-black text-white">
+
+<Link to={"/order"}>
+<div className="bg-neutral-600 py-2 px-2  hover:bg-blue-600 border-y border-b-black text-white">
   <button>Order</button>
 </div>
 </Link>
@@ -125,4 +126,4 @@ let menu =()=>{
   );
 };
 
-export default Navbar;
+export default Navbar;

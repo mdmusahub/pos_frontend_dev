@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+// Filename: ADDCART.jsx
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppContext } from './Contextapi';
 
 const ADDCART = () => {
   const [products, setProducts] = useState([]);
@@ -28,12 +30,15 @@ const ADDCART = () => {
 
   const headers = { 'ngrok-skip-browser-warning': 'true' };
 
-
+ const dataa=useContext(AppContext) 
+ 
+ const [token,settoken,count,setcount,user,setuser,categorydata,setcategorydata,productName,setName,sku,setSku,categoryId,setCategoryId,description,setDescription,updateActive,setUpdateActive,variantName,setvariantName,variantValue,setvariantValue,variantprice,setvariantprice,inventoryquantity,setinventoryquantity,inventorylocation,setinventorylocation,variantsarray,setvariantsarray,productvariants,setproductvariants,productId,setproductId,BaseUrl]=dataa
+ 
   useEffect(() => {
-    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/product/getAll`, { headers }).then(r => setProducts(r.data));
-    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/productVariant/getAll`, { headers }).then(r => setVariants(r.data));
-    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/ProductInventory/getAll`, { headers }).then(r => setInventory(r.data));
-    axios.get(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/discount/getAll`, { headers }).then(r => setDiscountData(r.data));
+    axios.get(`${BaseUrl}/product/getAll`, { headers }).then(r => setProducts(r.data));
+    axios.get(`${BaseUrl}/productVariant/getAll`, { headers }).then(r => setVariants(r.data));
+    axios.get(`${BaseUrl}/ProductInventory/getAll`, { headers }).then(r => setInventory(r.data));
+    axios.get(`${BaseUrl}/discount/getAll`, { headers }).then(r => setDiscountData(r.data));
   }, []);
 
   useEffect(() => {
@@ -59,7 +64,8 @@ const ADDCART = () => {
 
       if (activeDiscount) {
         setDis(activeDiscount.waiverMode === 'PERCENT'
-          ? `${activeDiscount.discountValue}%`
+      
+          ?` ${activeDiscount.discountValue}%`
           : `${activeDiscount.discountValue}`);
       } else {
         setDis('');
@@ -89,7 +95,7 @@ const ADDCART = () => {
       toast.error('Stock not available');
       return;
     }
-       
+
     setCartItems(prev => [...prev, {
       productVariantId: selectedVariant.value,
       productName: selectedProduct.label,
@@ -140,6 +146,8 @@ const ADDCART = () => {
     e.preventDefault();
     if (no.length < 10) return toast.error('Invalid phone number');
     if (cartItems.length === 0) return toast.error('Cart is empty');
+    const paid = parseFloat(cashAmount || 0) + parseFloat(onlineAmount || 0);
+    if (paid < parseFloat(totalAmount)) return toast.error('Paid amount is less than total');
 
     const payload = {
       userPhoneNumber: no,
@@ -156,7 +164,7 @@ const ADDCART = () => {
       })),
     };
 
-    axios.post(`https://b1c9-2405-201-3037-e814-db4-d4e9-276d-f1d4.ngrok-free.app/order/create`, payload)
+    axios.post(`${BaseUrl}/order/create`, payload)
       .then(() => {
         toast.success('Order placed!');
         setNo('');
@@ -176,6 +184,7 @@ const ADDCART = () => {
   };
 
   return (
+  
     <>
       <div className="min-h-screen bg-slate-100 p-6 pr-[420px]">
         <div className="bg-white p-4 rounded shadow mb-4">
@@ -262,8 +271,8 @@ const ADDCART = () => {
             {payment === 'online_upi' && (
               <input type="number" value={onlineAmount} onChange={e => setOnlineAmount(e.target.value)} placeholder="Online amount" className="border p-2 rounded" required />
             )}
-            <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} className="border p-2 rounded" required />
-            <input type="date" value={update} onChange={e => setUpdate(e.target.value)} className="border p-2 rounded" />
+            {/* <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} className="border p-2 rounded" required />
+            <input type="date" value={update} onChange={e => setUpdate(e.target.value)} className="border p-2 rounded" /> */}
             <button type="submit" className="bg-green-600 text-white py-2 rounded">Buy</button>
           </form>
         </div>
@@ -274,4 +283,4 @@ const ADDCART = () => {
   );
 };
 
-export default ADDCART;
+export default ADDCART;
